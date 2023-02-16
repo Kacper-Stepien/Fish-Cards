@@ -1,0 +1,12 @@
+.footer {
+    background-color: $color-gray-light-1;
+    padding: 1.6rem;
+    box-shadow: 0 -10px 20px rgba(112, 112, 112, 0.1);
+    
+    &__text {
+        color: $color-gray-light-2;
+        font-size: 1.4rem;
+        text-align: center;
+        cursor: default;
+    }
+}

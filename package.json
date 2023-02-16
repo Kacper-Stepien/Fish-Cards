@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "sass": "sass --no-source-map --watch src/sass/style.scss dist/styles/style.css"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "sass": "^1.58.1"
+  }
+}
