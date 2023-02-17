@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/style.css">
     <script defer src="https://kit.fontawesome.com/8c4bd008c3.js" crossorigin="anonymous"></script>
+    <script defer src="scripts/app.js"></script>
     <title>Memory Cards</title>
 </head>
 <body>
@@ -65,7 +66,7 @@
                 </div>
             </div>
         </section> -->
-        <section class="section delete-card-section">
+        <!-- <section class="section delete-card-section">
             <div class="delete-card-section__list">
                 <div class="delete-card-section__card">
                     <p class="delete-card-section__card-question">What is JS?</p>
@@ -75,6 +76,40 @@
                     <p class="delete-card-section__card-question">How to center div?</p>
                     <button class="delete-card-section__card-button"><i class="fa-solid fa-pen-to-square"></i></button>
                 </div>
+            </div>
+        </section> -->
+        <section class="section display-card-section">
+            <div class="display-card-section__card-container">
+                <!-- <div class="card">
+                    <div id="card-front" class="card__front">
+                        <p class="card__front-text">What is JS?</p>
+                        <i class="fa-solid fa-rotate card__icon"></i>
+                    </div>
+                    <div id="card-back" class="card__back">
+                        <p class="card__back-text">Js is a programming langueage for Frontend developers</p>
+                        <i class="fa-solid fa-rotate card__icon"></i>
+                    </div>
+                </div> -->
+                <div id="card" class="card">
+                    <div class="card__wrapper">
+                        <div id="card-front" class="card__front is-active">
+                            <p class="card__front-text">What is JS?</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                        <div id="card-back" class="card__back">
+                            <p class="card__back-text">JavaScript, w skrócie JS – skryptowy oraz wieloparadygmatowy język programowania, stworzony przez firmę Netscape,
+                            najczęściej stosowany na stronach internetowych. Twórcą JavaScriptu jest Brendan Eich.</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="display-card-section__nav">
+                <button id="prev-card" class="display-card-section__nav-button"><i class="fa-solid fa-arrow-left"></i></button>
+                <p class="display-card-section__nav-info">
+                    <span id="current-card">1</span>/<span id="total-cards">10</span>
+                </p>
+                <button id="next-card" class="display-card-section__nav-button"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </section>
     </div>

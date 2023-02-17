@@ -222,3 +222,118 @@ body {
 .delete-card-section__card:hover {
   background-color: #099268;
 }
+
+.display-card-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+}
+.display-card-section__card-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.display-card-section__nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.6rem;
+}
+.display-card-section__nav-button {
+  font-size: 2.4rem;
+  background-color: transparent;
+  color: #707070;
+  border: none;
+  border-radius: 50%;
+  width: 3.4rem;
+  height: 3.4rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.display-card-section__nav-button:hover {
+  background-color: #099268;
+  color: #fff;
+  border-radius: 50%;
+}
+.display-card-section__nav-info {
+  font-size: 2rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 62rem;
+  height: 35rem;
+  border-radius: 3px;
+  perspective: 1000px;
+  position: relative;
+}
+.card.is-switched .card__wrapper {
+  animation: rotate 0.5s linear both;
+}
+.card__wrapper {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: rotateinverse 0.5s linear both;
+}
+.card__front, .card__back {
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #fff;
+  padding: 2rem;
+}
+.card__front.is-active, .card__back.is-active {
+  position: static;
+}
+.card__front-text {
+  font-size: 3.2rem;
+  line-height: 1.5;
+}
+.card__back {
+  transform: rotateX(180deg);
+}
+.card__back-text {
+  font-size: 2rem;
+  line-height: 1.5;
+}
+.card__icon {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+  font-size: 2.8rem;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotateX(0);
+  }
+  70% {
+    transform: rotateX(200deg);
+  }
+  100% {
+    transform: rotateX(180deg);
+  }
+}
+@keyframes rotateinverse {
+  0% {
+    transform: rotateX(180deg);
+  }
+  70% {
+    transform: rotateX(-20deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
+}

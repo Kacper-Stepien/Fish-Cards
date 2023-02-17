@@ -1,0 +1,137 @@
+.display-card-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+
+    &__card-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.6rem;
+
+        &-button {
+            font-size: 2.4rem;
+            background-color: transparent;
+            color: $color-gray-dark-1;
+            border: none;
+            border-radius: 50%;
+            width: 3.4rem;
+            height: 3.4rem;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        &-button:hover {
+            background-color: $color-primary;
+            color: $color-white;
+            border-radius: 50%;
+        }
+
+        &-info {
+            font-size: 2rem;
+        }
+    }
+
+}
+.card {
+    width: 100%;
+    max-width: 62rem;
+    height: 35rem;
+    border-radius: $border-radius-small;
+    perspective: 1000px;
+    position: relative;
+
+    &.is-switched {
+        .card__wrapper {
+            animation: rotate $card-transition-time linear both;
+        }
+    }
+
+    &__wrapper {
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        animation: rotateinverse $card-transition-time linear both;
+    }
+
+    &__front, 
+    &__back {
+        backface-visibility: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-color: $color-white;
+        padding: 2rem;
+
+        &.is-active {
+            position: static;
+        }
+    }
+
+    &__front {
+        &-text {
+            font-size: 3.2rem;
+            line-height: 1.5;
+        }
+    }
+
+    &__back {
+        transform: rotateX(180deg);
+
+        &-text {
+            font-size: 2rem;
+            line-height: 1.5;
+        }
+    }
+
+    &__icon {
+        position: absolute;
+        top: 1.6rem;
+        right: 1.6rem;
+        font-size: 2.8rem;
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotateX(0);
+    }
+
+    70% {
+        transform: rotateX(200deg);
+    }
+
+    100% {
+        transform: rotateX(180deg);
+    }
+}
+
+@keyframes rotateinverse {
+    0% {
+        transform: rotateX(180deg);
+    }
+
+    70% {
+        transform: rotateX(-20deg);
+    }
+
+    100% {
+        transform: rotateX(0);
+    }
+}
