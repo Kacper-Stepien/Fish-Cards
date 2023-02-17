@@ -1,0 +1,102 @@
+.add-card-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+
+    &__form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem
+    }
+
+    &__form-element {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        max-width: 62rem;
+    }
+
+    &__label {
+        font-size: 1.6rem;
+    }
+
+    &__input {
+        padding: 0.5rem 1rem;
+        color: inherit;
+        font-size: 1.6rem;
+        border-radius: $border-radius-small;
+        border: 2px solid $color-gray-light-1;
+        outline: none;
+    }
+
+    &__input:active,
+    &__input:focus {
+        border: 2px solid $color-primary-light;
+    }
+
+    &__textarea {
+        resize: none;
+    }
+
+    &__category-group {
+        width: 100%;
+        max-width: 62rem;
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 2rem;
+    }
+
+    &__add-new-category {
+        display: flex;
+        gap:0;
+        border: none;
+
+        &__input {
+            border: 1px solid $color-gray-light-1;
+            border-radius: $border-radius-small 0 0 $border-radius-small;
+        }
+
+        &__button,
+        &__button:active,
+        &__button:focus {
+            border: none;
+            border-radius: 0 $border-radius-small $border-radius-small 0;
+            background-color:$color-gray-light-1;
+            color:$color-gray-light-2;
+            cursor: pointer;
+            transition: all .2s ease-in-out;
+        }
+
+        &__button:hover {
+            filter: brightness(1.05);
+        }
+
+    }
+
+    // &__add-new-category:active,
+    // &__add-new-category:focus {
+    //     border: 3px solid $color-gray-light-2;
+    // }
+
+    &__add-card-btn {
+        margin-top: 4rem;
+        background-color: $color-primary-light;
+        padding: 0.5rem 1rem;
+        max-width: 62rem;
+        width: 100%;
+        border: none;
+        border-radius: $border-radius-small;
+        color: $color-white;
+        transition: all .2s ease-in-out;
+    }
+
+    &__add-card-btn:hover {
+        transform: translateY(-5px);
+        filter: brightness(1.1);
+    }
+}

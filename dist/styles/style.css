@@ -23,6 +23,7 @@ body {
 
 .header {
   padding: 4.6rem 1rem 2.6rem 1rem;
+  position: relative;
 }
 .header__title {
   text-align: center;
@@ -30,6 +31,17 @@ body {
   font-weight: 400;
   letter-spacing: 4px;
   cursor: default;
+}
+.header__back-icon {
+  position: absolute;
+  top: 5rem;
+  left: 5rem;
+  font-size: 2.4rem;
+  color: #707070;
+  transition: all 0.2s ease-in-out;
+}
+.header__back-icon:hover {
+  transform: translateX(-5px);
 }
 
 .footer {
@@ -88,4 +100,85 @@ body {
 }
 .menu-section__element:hover {
   transform: translateY(-5px);
+}
+
+.add-card-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+.add-card-section__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+.add-card-section__form-element {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 62rem;
+}
+.add-card-section__label {
+  font-size: 1.6rem;
+}
+.add-card-section__input {
+  padding: 0.5rem 1rem;
+  color: inherit;
+  font-size: 1.6rem;
+  border-radius: 3px;
+  border: 2px solid #CED4DA;
+  outline: none;
+}
+.add-card-section__input:active, .add-card-section__input:focus {
+  border: 2px solid #12B181;
+}
+.add-card-section__textarea {
+  resize: none;
+}
+.add-card-section__category-group {
+  width: 100%;
+  max-width: 62rem;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.add-card-section__add-new-category {
+  display: flex;
+  gap: 0;
+  border: none;
+}
+.add-card-section__add-new-category__input {
+  border: 1px solid #CED4DA;
+  border-radius: 3px 0 0 3px;
+}
+.add-card-section__add-new-category__button, .add-card-section__add-new-category__button:active, .add-card-section__add-new-category__button:focus {
+  border: none;
+  border-radius: 0 3px 3px 0;
+  background-color: #CED4DA;
+  color: #868E96;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.add-card-section__add-new-category__button:hover {
+  filter: brightness(1.05);
+}
+.add-card-section__add-card-btn {
+  margin-top: 4rem;
+  background-color: #12B181;
+  padding: 0.5rem 1rem;
+  max-width: 62rem;
+  width: 100%;
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+  transition: all 0.2s ease-in-out;
+}
+.add-card-section__add-card-btn:hover {
+  transform: translateY(-5px);
+  filter: brightness(1.1);
 }

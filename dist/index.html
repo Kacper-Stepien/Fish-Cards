@@ -5,14 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/style.css">
+    <script defer src="https://kit.fontawesome.com/8c4bd008c3.js" crossorigin="anonymous"></script>
     <title>Memory Cards</title>
 </head>
 <body>
     <header class="header">
         <h1 class="header__title">Memory Cards</h1>
+        <a href="#"><i class="fa-solid fa-chevron-left header__back-icon"></i></a>
     </header>
     <div class="main-container">
-        <section class="section menu-section">
+        <!-- <section class="section menu-section">
             <nav>
                 <ul class="menu-section__nav">
                     <li class="menu-section__element menu-section__element-main"><a class="menu-section__element__link" href="#">Start practicing</a></li>
@@ -21,9 +23,36 @@
                     <li class="menu-section__element"><a class="menu-section__element__link" href="#">Delete card</a></li>
                 </ul>
             </nav>
+        </section> -->
+        <!-- <section class="section display-cards-section"></section> -->
+        <section class="section add-card-section">
+            <form class="add-card-section__form">
+                <div class="add-card-section__form-element">
+                    <label for="add-card-question" class="add-card-section__label">Question:</label>
+                    <input type="text" class="add-card-section__input" id="add-card-question" autofocus>
+                </div>
+                <div class="add-card-section__form-element">
+                    <label for="add-card-answer" class="add-card-section__label">Answer</label>
+                    <textarea class="add-card-section__input add-card-section__textarea" name="add-card-answer" id="add-card-answer" cols="30" rows="10" maxlength="500"></textarea>
+                </div>
+                <div class="add-card-section__category-group">
+                    <div class="add-card-section__form-element">
+                        <label for="choose-category-select" class="add-card-section__label">Category</label>
+                        <select name="choose-category-select" class="add-card-section__input" id="choose-category-select">
+                            <option value="">Choose category</option>
+                            <option value="HTML">HTML</option>
+                            <option value="JS">JS</option>
+                            <option value="Algorithms">Algorithms</option>
+                        </select>
+                    </div>
+                    <div class="add-card-section__add-new-category">
+                        <input type="text" class="add-card-section__input add-card-section__add-new-category__input" >
+                        <button class="add-card-section__input add-card-section__add-new-category__button">Add</button>
+                    </div>
+                </div>
+                <button class="add-card-section__add-card-btn">Add</button>
+            </form>
         </section>
-        <!-- <section class="section display-cards-section"></section>
-        <section class="section add-card-section"></section> -->
     </div>
     <footer class="footer">
         <p class="footer__text">
