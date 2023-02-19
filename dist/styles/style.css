@@ -192,13 +192,15 @@ body {
   filter: brightness(1.1);
 }
 
-.delete-card-section {
+.delete-card-section,
+.modify-card-section {
   display: flex;
   justify-content: center;
   max-height: 65vh;
   overflow-y: auto;
 }
-.delete-card-section__list {
+.delete-card-section__list,
+.modify-card-section__list {
   width: 100%;
   max-width: 60rem;
   height: 100%;
@@ -206,7 +208,8 @@ body {
   flex-direction: column;
   gap: 2rem;
 }
-.delete-card-section__card {
+.delete-card-section__card,
+.modify-card-section__card {
   background-color: #12B181;
   color: #fff;
   padding: 1rem;
@@ -216,11 +219,13 @@ body {
   align-items: center;
   transition: all 0.2s ease-in-out;
 }
-.delete-card-section__card-question {
+.delete-card-section__card-question,
+.modify-card-section__card-question {
   font-size: 2rem;
   cursor: default;
 }
-.delete-card-section__card-button {
+.delete-card-section__card-button,
+.modify-card-section__card-button {
   padding: 1rem;
   background-color: transparent;
   color: inherit;
@@ -228,8 +233,55 @@ body {
   border: none;
   cursor: pointer;
 }
-.delete-card-section__card:hover {
+.delete-card-section__card:hover,
+.modify-card-section__card:hover {
   background-color: #099268;
+}
+
+.delete-card-confirmation {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #099268;
+  padding: 2.4rem 4rem;
+  border-radius: 3px;
+  z-index: 20;
+  transition: all 0.2s ease-in-out;
+}
+.delete-card-confirmation__hidden {
+  top: -50%;
+  opacity: 0;
+}
+.delete-card-confirmation__text {
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 2rem;
+}
+.delete-card-confirmation__question {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 2rem;
+}
+.delete-card-confirmation__buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
+}
+.delete-card-confirmation__button {
+  padding: 1rem 2rem;
+  background-color: #fff;
+  color: #099268;
+  font-size: 1.6rem;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.delete-card-confirmation__button:hover {
+  transform: translateY(-3px);
 }
 
 .display-card-section {
@@ -368,4 +420,23 @@ body {
 .hidden-section-right {
   left: 120%;
   visibility: hidden;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+}
+
+.overlay-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.blurred {
+  filter: blur(2px);
 }

@@ -12,6 +12,9 @@ cardBack.addEventListener('click', flipCard);
 
 
 // Navigation of Sections ////////////////////////////////////////////////////////////////////////////////////////////////////////
+const header = document.getElementById('header') as HTMLDivElement;
+const footer = document.getElementById('footer') as HTMLDivElement;
+
 const mainMenuSection = document.getElementById('main-menu-section') as HTMLDivElement;
 const displayCardsSection = document.getElementById('display-cards-section') as HTMLDivElement;
 const addCardSection = document.getElementById('add-card-section') as HTMLDivElement;
@@ -132,4 +135,100 @@ confirmAddCardBtn.addEventListener('click', (e) => {
     e.preventDefault();
     addCardToLocalStorage();
     clearForm();
+});
+
+
+// Modify Cards ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const modifyCardsList = document.getElementById('modify-cards-list') as HTMLDivElement;
+
+function displayCardsToModify(cards: Card[]) {
+    modifyCardsList.innerHTML = '';
+    cards.forEach(card => {
+        modifyCardsList.innerHTML += `<div class="modify-card-section__card">
+                    <p class="modify-card-section__card-question">${card.question}</p>
+                    <button class="modify-card-section__card-button"><i class="fa-solid fa-pen-to-square"></i></button>
+                </div>`
+    });
+}
+
+displayCardsToModify(allCards);
+
+
+// Delete Cards ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const deleteCardsList = document.getElementById('delete-cards-list') as HTMLDivElement;
+const deleteCardConfirmationModal = document.getElementById('delete-card-confirmation') as HTMLDivElement;
+const deleteCardModalQuestion = document.getElementById('delete-card-question') as HTMLParagraphElement;
+const deleteCardModalYesBtn = document.getElementById('delete-card-confirmation__yes-btn') as HTMLButtonElement;
+const deleteCardModalNoBtn = document.getElementById('delete-card-confirmation__no-btn') as HTMLButtonElement;
+const overlay = document.getElementById('overlay') as HTMLDivElement;
+let questionOfCardToDelete: string = '';
+
+
+function displayCardsToDelete(cards: Card[]) {
+    deleteCardsList.innerHTML = '';
+    cards.forEach(card => {
+        deleteCardsList.innerHTML +=   `<div class="delete-card-section__card">
+                                            <p class="delete-card-section__card-question">${card.question}</p>
+                                            <button class="delete-card-section__card-button"><i class="fa-solid fa-trash"></i></button>
+                                        </div>`
+    });
+}
+displayCardsToDelete(allCards);
+
+deleteCardsList.addEventListener('click', (e) => {
+
+    if (e.target !== null) {
+        if (e.target !== deleteCardsList) {
+            let clickedElement = e.target as HTMLElement;
+            let parent = clickedElement.closest('.delete-card-section__card') as HTMLElement;
+            let title = clickedElement.querySelector('.delete-card-section__card-question')?.textContent;
+            if (title !== null && title !== undefined) {
+                questionOfCardToDelete = title;
+                showDeleteCardConfirmationModal(questionOfCardToDelete);
+            }
+       }
+    }
+});
+
+function addBlurToElement(element: HTMLElement) {
+    element.classList.add('blurred');
+}
+
+function removeBlurFromElement(element: HTMLElement) {
+    element.classList.remove('blurred');
+}
+
+function showDeleteCardConfirmationModal(question: string) {
+    deleteCardModalQuestion.textContent = question;
+    deleteCardConfirmationModal.classList.remove('delete-card-confirmation__hidden');
+    overlay.classList.remove('overlay-hidden');
+    addBlurToElement(deleteCardsSection);
+    addBlurToElement(header);
+    addBlurToElement(footer);
+}
+
+function closeDeleteCardConfirmationModal() {
+    deleteCardConfirmationModal.classList.add('delete-card-confirmation__hidden');
+    overlay.classList.add('overlay-hidden');
+    removeBlurFromElement(deleteCardsSection);
+    removeBlurFromElement(header);
+    removeBlurFromElement(footer);
+}
+
+function deleteCardFromLocalStorage(question: string) {
+    allCards = allCards.filter(card => card.question !== question);
+    localStorage.setItem('Memory-Cards-Cards', JSON.stringify(allCards));
+}
+
+deleteCardModalYesBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    deleteCardFromLocalStorage(questionOfCardToDelete);
+    closeDeleteCardConfirmationModal();
+    displayCardsToDelete(allCards);
+    displayCardsToModify(allCards);
+});
+
+deleteCardModalNoBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    closeDeleteCardConfirmationModal();
 });
