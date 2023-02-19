@@ -7,6 +7,7 @@
 
     &__card-container {
         width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -18,6 +19,7 @@
         justify-content: center;
         align-items: center;
         gap: 1.6rem;
+        margin-bottom: 2.6rem;
 
         &-button {
             font-size: 2.4rem;
@@ -46,12 +48,12 @@
 .card {
     width: 100%;
     max-width: 62rem;
-    height: 35rem;
+    height: 100%;
+    max-height: 40rem;
     border-radius: $border-radius-small;
     perspective: 1000px;
-    position: relative;
 
-    &.is-switched {
+    &.is-flipped {
         .card__wrapper {
             animation: rotate $card-transition-time linear both;
         }
@@ -60,24 +62,28 @@
     &__wrapper {
         width: 100%;
         height: 100%;
+        position: relative;
         transform-style: preserve-3d;
         animation: rotateinverse $card-transition-time linear both;
+        cursor: pointer;
     }
 
     &__front, 
     &__back {
-        backface-visibility: hidden;
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
+        backface-visibility: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
         background-color: $color-white;
         padding: 2rem;
+        border-radius: $border-radius-small;
+        box-shadow: 0 0 4rem rgba(112, 112, 112, 0.2);;
 
         &.is-active {
             position: static;
@@ -105,7 +111,13 @@
         top: 1.6rem;
         right: 1.6rem;
         font-size: 2.8rem;
+        transition: all .2s ease-in;
+
+        &:hover {
+            color: $color-primary;
+        }
     }
+
 }
 
 @keyframes rotate {

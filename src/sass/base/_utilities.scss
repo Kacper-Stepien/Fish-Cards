@@ -1,0 +1,13 @@
+.hidden {
+    opacity: 0;
+}
+
+.hidden-section-left {
+    left: -120%;
+    visibility: hidden;
+}
+
+.hidden-section-right {
+    left: 120%;
+    visibility: hidden;
+}

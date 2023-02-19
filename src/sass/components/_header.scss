@@ -20,6 +20,8 @@
     }
 
     &__back-icon:hover {
-        transform: translateX(-5px);
+        transform: scale(1.1);
+        color: $color-primary;
     }
 }
+

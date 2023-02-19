@@ -12,21 +12,24 @@
 <body>
     <header class="header">
         <h1 class="header__title">Memory Cards</h1>
-        <a href="#"><i class="fa-solid fa-chevron-left header__back-icon"></i></a>
+        <a id="back-main-page-btn" class="header__back-icon hidden" href="#"><i class="fa-solid fa-chevron-left"></i></a>
     </header>
     <div class="main-container">
-        <!-- <section class="section menu-section">
+
+        
+        <section id="main-menu-section" class="section menu-section">
             <nav>
                 <ul class="menu-section__nav">
-                    <li class="menu-section__element menu-section__element-main"><a class="menu-section__element__link" href="#">Start practicing</a></li>
-                    <li class="menu-section__element"><a class="menu-section__element__link" href="#">Add new card</a></li>
-                    <li class="menu-section__element"><a class="menu-section__element__link" href="#">Modify</a></li>
-                    <li class="menu-section__element"><a class="menu-section__element__link" href="#">Delete card</a></li>
+                    <li id="nav-start-practicing-btn" class="menu-section__element menu-section__element-main"><a class="menu-section__element__link" href="#">Start practicing</a></li>
+                    <li id="nav-add-card-btn" class="menu-section__element"><a class="menu-section__element__link" href="#">Add new card</a></li>
+                    <li id="nav-modify-card-btn" class="menu-section__element"><a class="menu-section__element__link" href="#">Modify</a></li>
+                    <li id="nav-delete-card-btn" class="menu-section__element"><a class="menu-section__element__link" href="#">Delete card</a></li>
                 </ul>
             </nav>
-        </section> -->
-        <!-- <section class="section display-cards-section"></section> -->
-        <!-- <section class="section add-card-section">
+        </section>
+
+
+        <section id="add-card-section" class="section add-card-section hidden-section-right">
             <form class="add-card-section__form">
                 <div class="add-card-section__form-element">
                     <label for="add-card-question" class="add-card-section__label">Question:</label>
@@ -53,8 +56,10 @@
                 </div>
                 <button class="add-card-section__add-card-btn">Add</button>
             </form>
-        </section> -->
-        <!-- <section class="section delete-card-section">
+        </section>
+
+
+        <section id="delete-cards-section" class="section delete-card-section hidden-section-right">
             <div class="delete-card-section__list">
                 <div class="delete-card-section__card">
                     <p class="delete-card-section__card-question">What is JS?</p>
@@ -65,8 +70,10 @@
                     <button class="delete-card-section__card-button"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
             </div>
-        </section> -->
-        <!-- <section class="section delete-card-section">
+        </section>
+
+
+        <section id="modify-cards-section" class="section delete-card-section hidden-section-right">
             <div class="delete-card-section__list">
                 <div class="delete-card-section__card">
                     <p class="delete-card-section__card-question">What is JS?</p>
@@ -77,21 +84,13 @@
                     <button class="delete-card-section__card-button"><i class="fa-solid fa-pen-to-square"></i></button>
                 </div>
             </div>
-        </section> -->
-        <section class="section display-card-section">
+        </section>
+
+
+        <section id="display-cards-section" class="section display-card-section hidden-section-right">
             <div class="display-card-section__card-container">
-                <!-- <div class="card">
-                    <div id="card-front" class="card__front">
-                        <p class="card__front-text">What is JS?</p>
-                        <i class="fa-solid fa-rotate card__icon"></i>
-                    </div>
-                    <div id="card-back" class="card__back">
-                        <p class="card__back-text">Js is a programming langueage for Frontend developers</p>
-                        <i class="fa-solid fa-rotate card__icon"></i>
-                    </div>
-                </div> -->
                 <div id="card" class="card">
-                    <div class="card__wrapper">
+                    <div id="card-wrapper" class="card__wrapper">
                         <div id="card-front" class="card__front is-active">
                             <p class="card__front-text">What is JS?</p>
                             <i class="fa-solid fa-rotate card__icon"></i>
@@ -112,6 +111,8 @@
                 <button id="next-card" class="display-card-section__nav-button"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </section>
+
+
     </div>
     <footer class="footer">
         <p class="footer__text">
