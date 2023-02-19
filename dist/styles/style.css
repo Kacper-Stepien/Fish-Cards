@@ -237,15 +237,15 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4rem;
 }
 .display-card-section__card-container {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  margin-bottom: 1.6rem;
 }
 .display-card-section__nav {
   display: flex;

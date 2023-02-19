@@ -30,31 +30,28 @@
 
 
         <section id="add-card-section" class="section add-card-section hidden-section-right">
-            <form class="add-card-section__form">
+            <form id="add-card-form" class="add-card-section__form">
                 <div class="add-card-section__form-element">
                     <label for="add-card-question" class="add-card-section__label">Question:</label>
-                    <input type="text" class="add-card-section__input" id="add-card-question" autofocus>
+                    <input id="add-card-question-input" type="text" class="add-card-section__input" autofocus>
                 </div>
                 <div class="add-card-section__form-element">
                     <label for="add-card-answer" class="add-card-section__label">Answer</label>
-                    <textarea class="add-card-section__input add-card-section__textarea" name="add-card-answer" id="add-card-answer" cols="30" rows="10" maxlength="500"></textarea>
+                    <textarea id="add-card-answer-input" class="add-card-section__input add-card-section__textarea" name="add-card-answer"  cols="30" rows="10" maxlength="500"></textarea>
                 </div>
                 <div class="add-card-section__category-group">
                     <div class="add-card-section__form-element">
                         <label for="choose-category-select" class="add-card-section__label">Category</label>
-                        <select name="choose-category-select" class="add-card-section__input" id="choose-category-select">
+                        <select id="choose-category-select" name="choose-category-select" class="add-card-section__input" >
                             <option value="">Choose category</option>
-                            <option value="HTML">HTML</option>
-                            <option value="JS">JS</option>
-                            <option value="Algorithms">Algorithms</option>
                         </select>
                     </div>
                     <div class="add-card-section__add-new-category">
-                        <input type="text" class="add-card-section__input add-card-section__add-new-category__input" >
-                        <button class="add-card-section__input add-card-section__add-new-category__button">Add</button>
+                        <input id="add-new-category-input" type="text" class="add-card-section__input add-card-section__add-new-category__input" >
+                        <button id="add-new-category-btn" class="add-card-section__input add-card-section__add-new-category__button">Add</button>
                     </div>
                 </div>
-                <button class="add-card-section__add-card-btn">Add</button>
+                <button id="confirm-add-card-btn" class="add-card-section__add-card-btn">Add</button>
             </form>
         </section>
 
