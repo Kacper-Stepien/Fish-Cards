@@ -27,6 +27,11 @@
     visibility: hidden;
 }
 
+.error-modal-hidden {
+    top: -50%;
+    opacity: 0;
+}
+
 .blurred {
     filter: blur(2px);
 }

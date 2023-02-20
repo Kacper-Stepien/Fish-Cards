@@ -16,6 +16,7 @@ const displayCardsSection = document.getElementById('display-cards-section');
 const addCardSection = document.getElementById('add-card-section');
 const deleteCardsSection = document.getElementById('delete-cards-section');
 const modifyCardsSection = document.getElementById('modify-cards-section');
+const modifyCardsSection2 = document.getElementById('modify-card-section');
 const navAddCardBtn = document.getElementById('nav-add-card-btn');
 const navStartPracticingBtn = document.getElementById('nav-start-practicing-btn');
 const navDeleteCardsBtn = document.getElementById('nav-delete-card-btn');
@@ -58,8 +59,31 @@ const confirmAddCardBtn = document.getElementById('confirm-add-card-btn');
 let allCards = getAllCardsFromLocalStorage();
 let categories = getCategoriesFromLocalStorage();
 addCategoriesToSelectElement();
-function addNewCategoryToLocalStorage() {
-    const newCategory = addNewCategoryInput.value;
+function validateAddNewCardForm() {
+    let question = addCardQuestionInput.value;
+    let answer = addCardAnswerInput.value;
+    if (question === '' || answer === '') {
+        return false;
+    }
+    ;
+    return true;
+}
+function checkIfQuestionExists(question) {
+    let questionExists = false;
+    for (let i = 0; i < allCards.length; i++) {
+        if (allCards[i].question.toLowerCase() === question.toLowerCase()) {
+            questionExists = true;
+            break;
+        }
+    }
+    // allCards.forEach(card => {
+    //     if (card.question.toLowerCase() === question.toLowerCase()) {
+    //         questionExists = true;
+    //     }
+    // });
+    return questionExists;
+}
+function addNewCategoryToLocalStorage(newCategory) {
     if (newCategory !== '' && !categories.includes(newCategory)) {
         categories.push(newCategory);
         localStorage.setItem('Memory-Cards-Categories', JSON.stringify(categories));
@@ -80,12 +104,12 @@ function clearNewCategoryInput() {
 }
 addNewCategoryBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    let x = addNewCategoryInput.value;
-    addNewCategoryToLocalStorage();
+    let newCategory = addNewCategoryInput.value;
+    addNewCategoryToLocalStorage(newCategory);
     categories = getCategoriesFromLocalStorage();
     addCategoriesToSelectElement();
     clearNewCategoryInput();
-    chooseCategorySelect.value = x;
+    chooseCategorySelect.value = newCategory;
 });
 function getAllCardsFromLocalStorage() {
     let cards = localStorage.getItem('Memory-Cards-Cards') ? JSON.parse(localStorage.getItem('Memory-Cards-Cards')) : [];
@@ -95,11 +119,9 @@ function addCardToLocalStorage() {
     let question = addCardQuestionInput.value;
     let answer = addCardAnswerInput.value;
     let category = chooseCategorySelect.value === 'Choose category' ? '' : chooseCategorySelect.value;
-    if (question !== '' && answer !== '') {
-        let newCard = new Card(question, answer, category);
-        allCards.push(newCard);
-        localStorage.setItem('Memory-Cards-Cards', JSON.stringify(allCards));
-    }
+    let newCard = new Card(question, answer, category);
+    allCards.push(newCard);
+    localStorage.setItem('Memory-Cards-Cards', JSON.stringify(allCards));
 }
 function clearForm() {
     addCardQuestionInput.value = '';
@@ -108,11 +130,23 @@ function clearForm() {
 }
 confirmAddCardBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    addCardToLocalStorage();
-    clearForm();
+    if (checkIfQuestionExists(addCardQuestionInput.value)) {
+        openErrorModal('This question already exists');
+    }
+    else if (!validateAddNewCardForm()) {
+        openErrorModal('Please fill in all fields');
+    }
+    else {
+        addCardToLocalStorage();
+        clearForm();
+        displayCardsToModify(allCards);
+        displayCardsToDelete(allCards);
+        openErrorModal('Card added successfully');
+    }
 });
 // Modify Cards ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const modifyCardsList = document.getElementById('modify-cards-list');
+displayCardsToModify(allCards);
 function displayCardsToModify(cards) {
     modifyCardsList.innerHTML = '';
     cards.forEach(card => {
@@ -122,7 +156,15 @@ function displayCardsToModify(cards) {
                 </div>`;
     });
 }
-displayCardsToModify(allCards);
+modifyCardsList.addEventListener('click', (e) => {
+    if (e.target !== null) {
+        if (e.target !== modifyCardsList) {
+            let clickedElement = e.target;
+            let cardToModify = clickedElement.closest('.modify-card-section__card');
+            let question = cardToModify.querySelector('.modify-card-section__card-question');
+        }
+    }
+});
 // Delete Cards ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const deleteCardsList = document.getElementById('delete-cards-list');
 const deleteCardConfirmationModal = document.getElementById('delete-card-confirmation');
@@ -147,7 +189,7 @@ deleteCardsList.addEventListener('click', (e) => {
         if (e.target !== deleteCardsList) {
             let clickedElement = e.target;
             let parent = clickedElement.closest('.delete-card-section__card');
-            let title = (_a = clickedElement.querySelector('.delete-card-section__card-question')) === null || _a === void 0 ? void 0 : _a.textContent;
+            let title = (_a = parent.querySelector('.delete-card-section__card-question')) === null || _a === void 0 ? void 0 : _a.textContent;
             if (title !== null && title !== undefined) {
                 questionOfCardToDelete = title;
                 showDeleteCardConfirmationModal(questionOfCardToDelete);
@@ -190,4 +232,21 @@ deleteCardModalYesBtn.addEventListener('click', (e) => {
 deleteCardModalNoBtn.addEventListener('click', (e) => {
     e.preventDefault();
     closeDeleteCardConfirmationModal();
+});
+// Error Modal ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const errorModal = document.getElementById('modal-with-errors');
+const errorModalMessage = document.getElementById('modal-with-errors-text');
+const errorModalBtn = document.getElementById('modal-with-errors-btn');
+function openErrorModal(message) {
+    errorModalMessage.textContent = message;
+    errorModal.classList.remove('error-modal-hidden');
+    overlay.classList.remove('overlay-hidden');
+}
+function closeErrorModal() {
+    errorModalMessage.textContent = "";
+    errorModal.classList.add('error-modal-hidden');
+    overlay.classList.add('overlay-hidden');
+}
+errorModalBtn.addEventListener('click', () => {
+    closeErrorModal();
 });

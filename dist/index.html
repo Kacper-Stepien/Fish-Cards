@@ -85,6 +85,35 @@
             </div>
         </section>
 
+        <section id="modify-card-section" class="section add-card-section hidden-section-right">
+            <form id="modify-card-form" class="add-card-section__form">
+                <div class="add-card-section__form-element">
+                    <label for="modify-card-question" class="add-card-section__label">Question:</label>
+                    <input id="modify-card-question-input" type="text" class="add-card-section__input" autofocus>
+                </div>
+                <div class="add-card-section__form-element">
+                    <label for="modify-card-answer" class="add-card-section__label">Answer</label>
+                    <textarea id="modify-card-answer-input" class="add-card-section__input add-card-section__textarea"
+                        name="modify-card-answer" cols="30" rows="10" maxlength="500"></textarea>
+                </div>
+                <div class="add-card-section__category-group">
+                    <div class="add-card-section__form-element">
+                        <label for="modify-choose-category-select" class="add-card-section__label">Category</label>
+                        <select id="modify-choose-category-select" name="choose-category-select" class="add-card-section__input">
+                            <option value="">Choose category</option>
+                        </select>
+                    </div>
+                    <div class="modify-card-section__add-new-category">
+                        <input id="modify-new-category-input" type="text"
+                            class="add-card-section__input add-card-section__add-new-category__input">
+                        <button id="modify-new-category-btn"
+                            class="add-card-section__input add-card-section__add-new-category__button">Add</button>
+                    </div>
+                </div>
+                <button id="confirm-add-card-btn" class="add-card-section__add-card-btn">Add</button>
+            </form>
+        </section>
+
 
         <section id="display-cards-section" class="section display-card-section hidden-section-right">
             <div class="display-card-section__card-container">
@@ -126,6 +155,11 @@
             <button id="delete-card-confirmation__yes-btn" class="delete-card-confirmation__button">Yes</button>
             <button id="delete-card-confirmation__no-btn" class="delete-card-confirmation__button">No</button>
         </div>
+    </div>
+
+    <div id="modal-with-errors" class="modal-with-errors error-modal-hidden">
+        <div id="modal-with-errors-text" class="modal-with-errors__text">The question and answer can't be empty</div>
+        <button id="modal-with-errors-btn" class="modal-with-errors__button">OK</button>
     </div>
 
     <div id="overlay" class="overlay overlay-hidden"></div>

@@ -20,6 +20,7 @@ const displayCardsSection = document.getElementById('display-cards-section') as 
 const addCardSection = document.getElementById('add-card-section') as HTMLDivElement;
 const deleteCardsSection = document.getElementById('delete-cards-section') as HTMLDivElement;
 const modifyCardsSection = document.getElementById('modify-cards-section') as HTMLDivElement;
+const modifyCardsSection2 = document.getElementById('modify-card-section') as HTMLDivElement;
 
 const navAddCardBtn = document.getElementById('nav-add-card-btn') as HTMLElement;
 const navStartPracticingBtn = document.getElementById('nav-start-practicing-btn') as HTMLElement;
@@ -75,8 +76,33 @@ let allCards: Card[] = getAllCardsFromLocalStorage();
 let categories: string[] = getCategoriesFromLocalStorage();
 addCategoriesToSelectElement();
 
-function addNewCategoryToLocalStorage() {
-    const newCategory = addNewCategoryInput.value;
+function validateAddNewCardForm(): boolean {
+    let question = addCardQuestionInput.value;
+    let answer = addCardAnswerInput.value; 
+    if (question === '' || answer === '') {
+        return false;
+    };
+    return true;
+}
+
+function checkIfQuestionExists(question: string): boolean {
+    let questionExists = false;
+    for (let i = 0; i < allCards.length; i++) {
+        if (allCards[i].question.toLowerCase() === question.toLowerCase()) {
+            questionExists = true;
+            break;
+        }
+    }
+
+    // allCards.forEach(card => {
+    //     if (card.question.toLowerCase() === question.toLowerCase()) {
+    //         questionExists = true;
+    //     }
+    // });
+    return questionExists;
+}
+
+function addNewCategoryToLocalStorage(newCategory: string) {
     if (newCategory !== '' && !categories.includes(newCategory)) {
         categories.push(newCategory);
         localStorage.setItem('Memory-Cards-Categories', JSON.stringify(categories));
@@ -101,12 +127,12 @@ function clearNewCategoryInput() {
 
 addNewCategoryBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    let x = addNewCategoryInput.value;
-    addNewCategoryToLocalStorage();
+    let newCategory = addNewCategoryInput.value;
+    addNewCategoryToLocalStorage(newCategory);
     categories = getCategoriesFromLocalStorage();
     addCategoriesToSelectElement();
     clearNewCategoryInput();
-    chooseCategorySelect.value = x;
+    chooseCategorySelect.value = newCategory;
 });
 
 function getAllCardsFromLocalStorage() {
@@ -118,11 +144,10 @@ function addCardToLocalStorage() {
     let question = addCardQuestionInput.value;
     let answer = addCardAnswerInput.value;
     let category = chooseCategorySelect.value === 'Choose category' ? '' : chooseCategorySelect.value;
-    if (question !== '' && answer !== '') { 
-        let newCard = new Card(question, answer, category);
-        allCards.push(newCard);
-        localStorage.setItem('Memory-Cards-Cards', JSON.stringify(allCards));
-    }
+    
+    let newCard = new Card(question, answer, category);
+    allCards.push(newCard);
+    localStorage.setItem('Memory-Cards-Cards', JSON.stringify(allCards));
 }
 
 function clearForm() {
@@ -133,13 +158,25 @@ function clearForm() {
 
 confirmAddCardBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    addCardToLocalStorage();
-    clearForm();
+    if (checkIfQuestionExists(addCardQuestionInput.value)) {
+        openErrorModal('This question already exists');
+    } 
+    else if (!validateAddNewCardForm()) {
+        openErrorModal('Please fill in all fields');
+    }
+    else {
+        addCardToLocalStorage();
+        clearForm();
+        displayCardsToModify(allCards);
+        displayCardsToDelete(allCards);
+        openErrorModal('Card added successfully');
+    }
 });
 
 
 // Modify Cards ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const modifyCardsList = document.getElementById('modify-cards-list') as HTMLDivElement;
+displayCardsToModify(allCards);
 
 function displayCardsToModify(cards: Card[]) {
     modifyCardsList.innerHTML = '';
@@ -151,7 +188,16 @@ function displayCardsToModify(cards: Card[]) {
     });
 }
 
-displayCardsToModify(allCards);
+modifyCardsList.addEventListener('click', (e) => {
+    if (e.target !== null) {
+        if (e.target !== modifyCardsList) {
+            let clickedElement = e.target as HTMLElement;
+            let cardToModify = clickedElement.closest('.modify-card-section__card') as HTMLDivElement;
+            let question = cardToModify.querySelector('.modify-card-section__card-question') as HTMLParagraphElement;
+
+        }
+    }
+});
 
 
 // Delete Cards ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,7 +227,7 @@ deleteCardsList.addEventListener('click', (e) => {
         if (e.target !== deleteCardsList) {
             let clickedElement = e.target as HTMLElement;
             let parent = clickedElement.closest('.delete-card-section__card') as HTMLElement;
-            let title = clickedElement.querySelector('.delete-card-section__card-question')?.textContent;
+            let title = parent.querySelector('.delete-card-section__card-question')?.textContent;
             if (title !== null && title !== undefined) {
                 questionOfCardToDelete = title;
                 showDeleteCardConfirmationModal(questionOfCardToDelete);
@@ -232,3 +278,25 @@ deleteCardModalNoBtn.addEventListener('click', (e) => {
     e.preventDefault();
     closeDeleteCardConfirmationModal();
 });
+
+
+// Error Modal ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const errorModal = document.getElementById('modal-with-errors') as HTMLDivElement;
+const errorModalMessage = document.getElementById('modal-with-errors-text') as HTMLDivElement;
+const errorModalBtn = document.getElementById('modal-with-errors-btn') as HTMLButtonElement;
+
+function openErrorModal(message: string) {
+    errorModalMessage.textContent = message;
+    errorModal.classList.remove('error-modal-hidden');
+    overlay.classList.remove('overlay-hidden');
+}
+
+function closeErrorModal() {
+    errorModalMessage.textContent = ""
+    errorModal.classList.add('error-modal-hidden');
+    overlay.classList.add('overlay-hidden');
+}
+
+errorModalBtn.addEventListener('click', () => {
+    closeErrorModal();
+}) ;
