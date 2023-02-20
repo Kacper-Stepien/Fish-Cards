@@ -39,7 +39,15 @@ navAddCardBtn.addEventListener('click', () => displaySection(addCardSection));
 navStartPracticingBtn.addEventListener('click', () => displaySection(displayCardsSection));
 navDeleteCardsBtn.addEventListener('click', () => displaySection(deleteCardsSection));
 navModifyCardsBtn.addEventListener('click', () => displaySection(modifyCardsSection));
-backMainPageBtn.addEventListener('click', displayMainMenu);
+backMainPageBtn.addEventListener('click', () => {
+    if (!modifyCardsSection2.classList.contains('hidden-section-right')) {
+        modifyCardsSection2.classList.add('hidden-section-right');
+        modifyCardsSection.classList.remove('hidden-section-left');
+    }
+    else {
+        displayMainMenu();
+    }
+});
 // Card Class ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Card {
     constructor(question, answer, category) {
@@ -58,10 +66,8 @@ const addNewCategoryBtn = document.getElementById('add-new-category-btn');
 const confirmAddCardBtn = document.getElementById('confirm-add-card-btn');
 let allCards = getAllCardsFromLocalStorage();
 let categories = getCategoriesFromLocalStorage();
-addCategoriesToSelectElement();
-function validateAddNewCardForm() {
-    let question = addCardQuestionInput.value;
-    let answer = addCardAnswerInput.value;
+addCategoriesToSelectElement(chooseCategorySelect);
+function validateCardData(question, answer) {
     if (question === '' || answer === '') {
         return false;
     }
@@ -76,11 +82,6 @@ function checkIfQuestionExists(question) {
             break;
         }
     }
-    // allCards.forEach(card => {
-    //     if (card.question.toLowerCase() === question.toLowerCase()) {
-    //         questionExists = true;
-    //     }
-    // });
     return questionExists;
 }
 function addNewCategoryToLocalStorage(newCategory) {
@@ -93,10 +94,10 @@ function getCategoriesFromLocalStorage() {
     const allCategories = localStorage.getItem('Memory-Cards-Categories') ? JSON.parse(localStorage.getItem('Memory-Cards-Categories')) : [];
     return allCategories;
 }
-function addCategoriesToSelectElement() {
-    chooseCategorySelect.innerHTML = '<option value="">Choose category</option>';
+function addCategoriesToSelectElement(select) {
+    select.innerHTML = '<option value="">Choose category</option>';
     categories.forEach(category => {
-        chooseCategorySelect.innerHTML += `<option value="${category}">${category}</option>`;
+        select.innerHTML += `<option value="${category}">${category}</option>`;
     });
 }
 function clearNewCategoryInput() {
@@ -107,7 +108,7 @@ addNewCategoryBtn.addEventListener('click', (e) => {
     let newCategory = addNewCategoryInput.value;
     addNewCategoryToLocalStorage(newCategory);
     categories = getCategoriesFromLocalStorage();
-    addCategoriesToSelectElement();
+    addCategoriesToSelectElement(chooseCategorySelect);
     clearNewCategoryInput();
     chooseCategorySelect.value = newCategory;
 });
@@ -115,10 +116,7 @@ function getAllCardsFromLocalStorage() {
     let cards = localStorage.getItem('Memory-Cards-Cards') ? JSON.parse(localStorage.getItem('Memory-Cards-Cards')) : [];
     return cards;
 }
-function addCardToLocalStorage() {
-    let question = addCardQuestionInput.value;
-    let answer = addCardAnswerInput.value;
-    let category = chooseCategorySelect.value === 'Choose category' ? '' : chooseCategorySelect.value;
+function addCardToLocalStorage(question, answer, category) {
     let newCard = new Card(question, answer, category);
     allCards.push(newCard);
     localStorage.setItem('Memory-Cards-Cards', JSON.stringify(allCards));
@@ -126,26 +124,36 @@ function addCardToLocalStorage() {
 function clearForm() {
     addCardQuestionInput.value = '';
     addCardAnswerInput.value = '';
-    chooseCategorySelect.value = 'Choose category';
+    chooseCategorySelect.value = '';
 }
 confirmAddCardBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    if (checkIfQuestionExists(addCardQuestionInput.value)) {
+    let question = addCardQuestionInput.value;
+    let answer = addCardAnswerInput.value;
+    let category = chooseCategorySelect.value === 'Choose category' ? '' : chooseCategorySelect.value;
+    if (checkIfQuestionExists(question)) {
         openErrorModal('This question already exists');
     }
-    else if (!validateAddNewCardForm()) {
+    else if (!validateCardData(question, answer)) {
         openErrorModal('Please fill in all fields');
     }
     else {
-        addCardToLocalStorage();
-        clearForm();
+        addCardToLocalStorage(question, answer, category);
         displayCardsToModify(allCards);
         displayCardsToDelete(allCards);
+        clearForm();
         openErrorModal('Card added successfully');
     }
 });
 // Modify Cards ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const modifyCardsList = document.getElementById('modify-cards-list');
+const modifyCardQuestionInput = document.getElementById('modify-card-question-input');
+const modifyCardAnswerInput = document.getElementById('modify-card-answer-input');
+const modifyCardCategorySelect = document.getElementById('modify-choose-category-select');
+const modifyCardNewCategoryInput = document.getElementById('modify-new-category-input');
+const modifyCardNewCategoryBtn = document.getElementById('modify-new-category-btn');
+const modifyCardConfirmBtn = document.getElementById('confirm-modify-card-btn');
+let cardQuestionToModify = '';
 displayCardsToModify(allCards);
 function displayCardsToModify(cards) {
     modifyCardsList.innerHTML = '';
@@ -156,14 +164,89 @@ function displayCardsToModify(cards) {
                 </div>`;
     });
 }
+function getCardAnswerByQuestion(question) {
+    let answer = '';
+    for (let i = 0; i < allCards.length; i++) {
+        if (allCards[i].question === question) {
+            answer = allCards[i].answer;
+            break;
+        }
+    }
+    return answer;
+}
+function getCardCategoryByQuestion(question) {
+    let category = '';
+    for (let i = 0; i < allCards.length; i++) {
+        if (allCards[i].question === question) {
+            category = allCards[i].category;
+            break;
+        }
+    }
+    return category;
+}
+function changeCardData(question, answer, category) {
+    for (let i = 0; i < allCards.length; i++) {
+        if (allCards[i].question === cardQuestionToModify) {
+            allCards[i].question = question;
+            allCards[i].answer = answer;
+            allCards[i].category = category;
+            break;
+        }
+    }
+    localStorage.setItem('Memory-Cards-Cards', JSON.stringify(allCards));
+}
+function displayModifyCardForm(question, answer, category) {
+    modifyCardCategorySelect.innerHTML = '<option value="">Choose category</option>';
+    categories.forEach(category => {
+        modifyCardCategorySelect.innerHTML += `<option value="${category}">${category}</option>`;
+    });
+    modifyCardQuestionInput.value = question;
+    modifyCardAnswerInput.value = answer;
+    modifyCardCategorySelect.value = category;
+    modifyCardsSection2.classList.remove('hidden-section-right');
+    modifyCardsSection.classList.add('hidden-section-left');
+}
 modifyCardsList.addEventListener('click', (e) => {
+    var _a;
     if (e.target !== null) {
         if (e.target !== modifyCardsList) {
             let clickedElement = e.target;
             let cardToModify = clickedElement.closest('.modify-card-section__card');
-            let question = cardToModify.querySelector('.modify-card-section__card-question');
+            let question = (_a = cardToModify.querySelector('.modify-card-section__card-question')) === null || _a === void 0 ? void 0 : _a.textContent;
+            let answer = getCardAnswerByQuestion(question);
+            let category = getCardCategoryByQuestion(question);
+            cardQuestionToModify = question;
+            displayModifyCardForm(question, answer, category);
         }
     }
+});
+modifyCardConfirmBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    let question = modifyCardQuestionInput.value;
+    let answer = modifyCardAnswerInput.value;
+    let category = modifyCardCategorySelect.value === 'Choose category' ? '' : modifyCardCategorySelect.value;
+    if (!validateCardData(question, answer)) {
+        openErrorModal('Please fill in all fields');
+    }
+    else {
+        console.log("zmieniam");
+        changeCardData(question, answer, category);
+        displayCardsToModify(allCards);
+        displayCardsToDelete(allCards);
+        openErrorModal('Card modified successfully');
+        modifyCardsSection.classList.remove('hidden-section-left');
+        modifyCardsSection2.classList.add('hidden-section-right');
+    }
+});
+modifyCardNewCategoryBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    let newCategory = modifyCardNewCategoryInput.value;
+    addNewCategoryToLocalStorage(newCategory);
+    categories = getCategoriesFromLocalStorage();
+    addCategoriesToSelectElement(modifyCardCategorySelect);
+    addCategoriesToSelectElement(chooseCategorySelect);
+    clearNewCategoryInput();
+    modifyCardCategorySelect.value = newCategory;
 });
 // Delete Cards ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const deleteCardsList = document.getElementById('delete-cards-list');
