@@ -1,13 +1,13 @@
-// Media QUERY MANAGER
-/*
-0 - 600px: Phone
-600 - 900px: Tablet
-900 - 1200px: Laptop
-1200px - 1800px: Desktop
-1800px +: Large Desktop
-*/
+@mixin flex($direction, $justify, $align) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+}
+
 
 // $breakpoints: (
+//     small: 400px,
 //     phone: 600px,
 //     tablet: 900px,
 //     laptop: 1200px,
@@ -17,18 +17,23 @@
 // 1em = 16px
 
 @mixin respond($breakpoint) {
+    @if $breakpoint == small {
+        @media only screen and (max-width: 25em) {    // 400px / 16px = 25em
+            @content;
+        }        
+    }
     @if $breakpoint == phone {
         @media only screen and (max-width: 37.5em) {    // 600px / 16px = 37.5em
             @content;
         }        
     }
     @if $breakpoint == tablet {
-        @media only screen and (min-width: 56.25em) {   // 900px / 16px = 56.25em
+        @media only screen and (max-width: 56.25em) {   // 900px / 16px = 56.25em
             @content;
         }        
     }
     @if $breakpoint == laptop {
-        @media only screen and (min-width: 75em) {  // 1200px / 16px = 75em
+        @media only screen and (max-width: 75em) {  // 1200px / 16px = 75em
             @content;
         }        
     }

@@ -1,25 +1,18 @@
 .display-card-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    @include flex(column, center, center);
     
 
     &__card-container {
         width: 100%;
         height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        @include flex(column, center, center);
         margin-bottom: 1.6rem;
         position: relative;
+        padding: 1rem;
     }
 
     &__nav {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flex(row, center, center);
         gap: 1.6rem;
         margin-bottom: 2.6rem;
 
@@ -32,7 +25,7 @@
             width: 3.4rem;
             height: 3.4rem;
             cursor: pointer;
-            transition: all .2s;
+            transition: $quick-animation;
         }
 
         &-button:hover {
@@ -58,7 +51,12 @@
     max-height: 40rem;
     border-radius: $border-radius-small;
     perspective: 1000px;
-    transition: all .3s ease-in;
+    transition: $card-move-animation;
+
+    @include respond(phone) {
+            max-height: 55rem;
+            max-width: 90%;
+        }
 
     &.is-flipped {
         .card__wrapper {
@@ -83,9 +81,7 @@
         width: 100%;
         height: 100%;
         backface-visibility: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include flex(row, center, center);
         text-align: center;
         background-color: $color-white;
         padding: 2rem;
@@ -101,6 +97,9 @@
         &-text {
             font-size: 3.2rem;
             line-height: 1.5;
+            @include respond(phone) {
+                    font-size: 2.6rem;
+                }
         }
     }
 
@@ -110,6 +109,9 @@
         &-text {
             font-size: 2rem;
             line-height: 1.5;
+            @include respond(small) {
+                    font-size: 1.8rem;
+                }
         }
     }
 
@@ -118,7 +120,7 @@
         top: 1.6rem;
         right: 1.6rem;
         font-size: 2.8rem;
-        transition: all .2s ease-in;
+        transition: $quick-animation;
 
         &:hover {
             color: $color-primary;
@@ -129,42 +131,17 @@
         position: absolute;
         left: 120%;
         opacity: 0;
-        transition: all .3s ease-in;
+        transition: $card-move-animation;
+        z-index: -10;
     }
 
     &-left {
         position: absolute;
         left: -120%;
         opacity: 0;
-        transition: all .3s ease-in;
+        transition: $card-move-animation;
+        z-index: -10;
     }
 
 }
 
-@keyframes rotate {
-    0% {
-        transform: rotateX(0);
-    }
-
-    70% {
-        transform: rotateX(200deg);
-    }
-
-    100% {
-        transform: rotateX(180deg);
-    }
-}
-
-@keyframes rotateinverse {
-    0% {
-        transform: rotateX(180deg);
-    }
-
-    70% {
-        transform: rotateX(-20deg);
-    }
-
-    100% {
-        transform: rotateX(0);
-    }
-}

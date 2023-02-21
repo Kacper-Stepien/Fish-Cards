@@ -1,9 +1,9 @@
 .delete-card-section,
 .modify-card-section {
-    display: flex;
-    justify-content: center;
+    @include flex(row, center, stretch);
     max-height: 65vh;
     overflow-y: auto;
+    padding: 2rem;
 
     &__list {
         width: 100%;
@@ -19,10 +19,8 @@
         color: $color-white;
         padding: 1rem;
         border-radius: $border-radius-small;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: all .2s ease-in-out;
+        @include flex(row, space-between, center);
+        transition: $quick-animation;
 
         &-question {
             font-size: 2rem;
@@ -54,7 +52,14 @@
     padding: 2.4rem 4rem;
     border-radius: $border-radius-small;
     z-index: 20;
-    transition: all .2s ease-in-out;
+    transition: $quick-animation;
+
+    @include respond(phone) {
+        top: 50%;
+        width: 90%;
+        transform: translate(-50%, -50%);
+        padding: 4rem 1.8rem;
+    }
 
     &__hidden {
         top: -50%;
@@ -65,6 +70,7 @@
         font-size: 2rem;
         color: $color-white;
         margin-bottom: 2rem;
+
     }
 
     &__question {
@@ -75,24 +81,7 @@
     }
 
     &__buttons {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
+        @include flex(row, flex-end, center);
         gap: 2rem;
-    }
-
-    &__button {
-        padding: 1rem 2rem;
-        background-color: $color-white;
-        color: $color-primary;
-        font-size: 1.6rem;
-        border: none;
-        border-radius: $border-radius-small;
-        cursor: pointer;
-        transition: all .2s ease-in-out;
-    }
-
-    &__button:hover {
-        transform: translateY(-3px);
     }
 }

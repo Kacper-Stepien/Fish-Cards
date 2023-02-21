@@ -1,11 +1,26 @@
-/*
-0 - 600px: Phone
-600 - 900px: Tablet
-900 - 1200px: Laptop
-1200px - 1800px: Desktop
-1800px +: Large Desktop
-*/
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap");
+@keyframes rotate {
+  0% {
+    transform: rotateX(0);
+  }
+  70% {
+    transform: rotateX(200deg);
+  }
+  100% {
+    transform: rotateX(180deg);
+  }
+}
+@keyframes rotateinverse {
+  0% {
+    transform: rotateX(180deg);
+  }
+  70% {
+    transform: rotateX(-20deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
+}
 *,
 *::after,
 *::before {
@@ -17,7 +32,7 @@
 html {
   font-size: 62.5%;
 }
-@media only screen and (min-width: 56.25em) {
+@media only screen and (max-width: 56.25em) {
   html {
     font-size: 56.25%;
   }
@@ -44,6 +59,21 @@ body {
   overflow-x: hidden;
 }
 
+.btn-small {
+  padding: 1rem 2rem;
+  background-color: #fff;
+  color: #099268;
+  font-size: 2rem;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  align-self: flex-end;
+}
+.btn-small:hover {
+  transform: translateY(-3px);
+}
+
 .header {
   padding: 4.6rem 1rem 2.6rem 1rem;
   position: relative;
@@ -55,6 +85,16 @@ body {
   letter-spacing: 4px;
   cursor: default;
 }
+@media only screen and (max-width: 37.5em) {
+  .header__title {
+    font-size: 4.2rem;
+  }
+}
+@media only screen and (max-width: 25em) {
+  .header__title {
+    font-size: 3.2rem;
+  }
+}
 .header__back-icon {
   position: absolute;
   top: 5rem;
@@ -62,6 +102,12 @@ body {
   font-size: 2.4rem;
   color: #707070;
   transition: all 0.2s ease-in-out;
+}
+@media only screen and (max-width: 37.5em) {
+  .header__back-icon {
+    top: 2rem;
+    left: 2rem;
+  }
 }
 .header__back-icon:hover {
   transform: scale(1.1);
@@ -103,9 +149,9 @@ body {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 2.6rem;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  gap: 2.6rem;
 }
 .menu-section__element {
   width: 100%;
@@ -134,21 +180,25 @@ body {
 }
 
 .add-card-section {
+  padding: 0 2rem 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
 }
 .add-card-section__form {
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: start;
   align-items: center;
   gap: 2rem;
 }
 .add-card-section__form-element {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
   gap: 1rem;
   width: 100%;
   max-width: 62rem;
@@ -174,9 +224,16 @@ body {
   width: 100%;
   max-width: 62rem;
   display: flex;
-  align-items: end;
+  flex-direction: row;
   justify-content: space-between;
+  align-items: end;
   gap: 2rem;
+}
+@media only screen and (max-width: 37.5em) {
+  .add-card-section__category-group {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 .add-card-section__add-new-category {
   display: flex;
@@ -186,6 +243,11 @@ body {
 .add-card-section__add-new-category__input {
   border: 1px solid #CED4DA;
   border-radius: 3px 0 0 3px;
+}
+@media only screen and (max-width: 37.5em) {
+  .add-card-section__add-new-category__input {
+    width: 100%;
+  }
 }
 .add-card-section__add-new-category__button, .add-card-section__add-new-category__button:active, .add-card-section__add-new-category__button:focus {
   border: none;
@@ -217,9 +279,12 @@ body {
 .delete-card-section,
 .modify-card-section {
   display: flex;
+  flex-direction: row;
   justify-content: center;
+  align-items: stretch;
   max-height: 65vh;
   overflow-y: auto;
+  padding: 2rem;
 }
 .delete-card-section__list,
 .modify-card-section__list {
@@ -237,6 +302,7 @@ body {
   padding: 1rem;
   border-radius: 3px;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   transition: all 0.2s ease-in-out;
@@ -271,6 +337,14 @@ body {
   z-index: 20;
   transition: all 0.2s ease-in-out;
 }
+@media only screen and (max-width: 37.5em) {
+  .delete-card-confirmation {
+    top: 50%;
+    width: 90%;
+    transform: translate(-50%, -50%);
+    padding: 4rem 1.8rem;
+  }
+}
 .delete-card-confirmation__hidden {
   top: -50%;
   opacity: 0;
@@ -288,29 +362,17 @@ body {
 }
 .delete-card-confirmation__buttons {
   display: flex;
-  align-items: center;
+  flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
   gap: 2rem;
-}
-.delete-card-confirmation__button {
-  padding: 1rem 2rem;
-  background-color: #fff;
-  color: #099268;
-  font-size: 1.6rem;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-.delete-card-confirmation__button:hover {
-  transform: translateY(-3px);
 }
 
 .display-card-section {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 .display-card-section__card-container {
   width: 100%;
@@ -321,9 +383,11 @@ body {
   align-items: center;
   margin-bottom: 1.6rem;
   position: relative;
+  padding: 1rem;
 }
 .display-card-section__nav {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   gap: 1.6rem;
@@ -338,7 +402,7 @@ body {
   width: 3.4rem;
   height: 3.4rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease-in-out;
 }
 .display-card-section__nav-button:hover {
   background-color: #099268;
@@ -362,6 +426,12 @@ body {
   perspective: 1000px;
   transition: all 0.3s ease-in;
 }
+@media only screen and (max-width: 37.5em) {
+  .card {
+    max-height: 55rem;
+    max-width: 90%;
+  }
+}
 .card.is-flipped .card__wrapper {
   animation: rotate 0.5s linear both;
 }
@@ -381,8 +451,9 @@ body {
   height: 100%;
   backface-visibility: hidden;
   display: flex;
-  align-items: center;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
   text-align: center;
   background-color: #fff;
   padding: 2rem;
@@ -396,6 +467,11 @@ body {
   font-size: 3.2rem;
   line-height: 1.5;
 }
+@media only screen and (max-width: 37.5em) {
+  .card__front-text {
+    font-size: 2.6rem;
+  }
+}
 .card__back {
   transform: rotateX(180deg);
 }
@@ -403,12 +479,17 @@ body {
   font-size: 2rem;
   line-height: 1.5;
 }
+@media only screen and (max-width: 25em) {
+  .card__back-text {
+    font-size: 1.8rem;
+  }
+}
 .card__icon {
   position: absolute;
   top: 1.6rem;
   right: 1.6rem;
   font-size: 2.8rem;
-  transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in-out;
 }
 .card__icon:hover {
   color: #099268;
@@ -418,36 +499,16 @@ body {
   left: 120%;
   opacity: 0;
   transition: all 0.3s ease-in;
+  z-index: -10;
 }
 .card-left {
   position: absolute;
   left: -120%;
   opacity: 0;
   transition: all 0.3s ease-in;
+  z-index: -10;
 }
 
-@keyframes rotate {
-  0% {
-    transform: rotateX(0);
-  }
-  70% {
-    transform: rotateX(200deg);
-  }
-  100% {
-    transform: rotateX(180deg);
-  }
-}
-@keyframes rotateinverse {
-  0% {
-    transform: rotateX(180deg);
-  }
-  70% {
-    transform: rotateX(-20deg);
-  }
-  100% {
-    transform: rotateX(0);
-  }
-}
 .modal-with-errors {
   position: absolute;
   top: 10%;
@@ -464,24 +525,17 @@ body {
   gap: 2rem;
   transition: all 0.2s ease-in-out;
 }
+@media only screen and (max-width: 37.5em) {
+  .modal-with-errors {
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+  }
+}
 .modal-with-errors__text {
   font-size: 2rem;
   color: #fff;
   margin-bottom: 2rem;
-}
-.modal-with-errors__button {
-  padding: 1rem 2rem;
-  background-color: #fff;
-  color: #099268;
-  font-size: 2rem;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  align-self: flex-end;
-}
-.modal-with-errors__button:hover {
-  transform: translateY(-3px);
 }
 
 .hidden {
