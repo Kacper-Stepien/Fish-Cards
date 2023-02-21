@@ -1,0 +1,40 @@
+// Media QUERY MANAGER
+/*
+0 - 600px: Phone
+600 - 900px: Tablet
+900 - 1200px: Laptop
+1200px - 1800px: Desktop
+1800px +: Large Desktop
+*/
+
+// $breakpoints: (
+//     phone: 600px,
+//     tablet: 900px,
+//     laptop: 1200px,
+//     desktop: 1800px
+// );
+
+// 1em = 16px
+
+@mixin respond($breakpoint) {
+    @if $breakpoint == phone {
+        @media only screen and (max-width: 37.5em) {    // 600px / 16px = 37.5em
+            @content;
+        }        
+    }
+    @if $breakpoint == tablet {
+        @media only screen and (min-width: 56.25em) {   // 900px / 16px = 56.25em
+            @content;
+        }        
+    }
+    @if $breakpoint == laptop {
+        @media only screen and (min-width: 75em) {  // 1200px / 16px = 75em
+            @content;
+        }        
+    }
+    @if $breakpoint == desktop {
+        @media only screen and (min-width: 112.5em) {   // 1800px / 16px = 112.5em
+            @content;
+        }        
+    }
+}

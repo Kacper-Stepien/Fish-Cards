@@ -1,17 +1,20 @@
-// Flipping cards ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const card = document.getElementById('card') as HTMLDivElement;
-const cardFront = document.getElementById('card-front') as HTMLDivElement;
-const cardBack = document.getElementById('card-back') as HTMLDivElement;
+///////////////////////////////////////////////////////////// CARD CLASS /////////////////////////////////////////////////////////////
+class Card {
+    question: string;
+    answer: string;
+    category: string;
 
-function flipCard() {
-  card.classList.toggle('is-flipped');
+    constructor(question: string, answer: string, category: string) {
+        this.question = question;
+        this.answer = answer;
+        this.category = category;
+    }
 }
 
-cardFront.addEventListener('click', flipCard);
-cardBack.addEventListener('click', flipCard);
+///////////////////////////////////////////////////////////// INITIALIZE /////////////////////////////////////////////////////////////
 
 
-// Navigation of Sections ////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////// Navigation of Sections /////////////////////////////////////////////////////////////
 const header = document.getElementById('header') as HTMLDivElement;
 const footer = document.getElementById('footer') as HTMLDivElement;
 
@@ -58,20 +61,7 @@ backMainPageBtn.addEventListener('click', ()=> {
     }
 });
 
-// Card Class ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Card {
-    question: string;
-    answer: string;
-    category: string;
-
-    constructor(question: string, answer: string, category: string) {
-        this.question = question;
-        this.answer = answer;
-        this.category = category;
-    }
-}
-
-// Add new Card ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////// ADD NEW CARD /////////////////////////////////////////////////////////////
 const addCardForm = document.getElementById('add-card-form') as HTMLFormElement;
 const addCardQuestionInput = document.getElementById('add-card-question-input') as HTMLInputElement;
 const addCardAnswerInput = document.getElementById('add-card-answer-input') as HTMLTextAreaElement;
@@ -81,6 +71,7 @@ const addNewCategoryBtn = document.getElementById('add-new-category-btn') as HTM
 const confirmAddCardBtn = document.getElementById('confirm-add-card-btn') as HTMLButtonElement;
 
 let allCards: Card[] = getAllCardsFromLocalStorage();
+let allCardsElement: string[] = createCardsHTMLElementsArray(allCards, '');
 let categories: string[] = getCategoriesFromLocalStorage();
 addCategoriesToSelectElement(chooseCategorySelect);
 
@@ -173,7 +164,7 @@ confirmAddCardBtn.addEventListener('click', (e) => {
 });
 
 
-// Modify Cards ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////// MODIFY CARDS /////////////////////////////////////////////////////////////
 const modifyCardsList = document.getElementById('modify-cards-list') as HTMLDivElement;
 const modifyCardQuestionInput = document.getElementById('modify-card-question-input') as HTMLInputElement;
 const modifyCardAnswerInput = document.getElementById('modify-card-answer-input') as HTMLTextAreaElement;
@@ -290,7 +281,7 @@ modifyCardNewCategoryBtn.addEventListener('click', (e) => {
 });
 
 
-// Delete Cards ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////// DELETE CARDS /////////////////////////////////////////////////////////////
 const deleteCardsList = document.getElementById('delete-cards-list') as HTMLDivElement;
 const deleteCardConfirmationModal = document.getElementById('delete-card-confirmation') as HTMLDivElement;
 const deleteCardModalQuestion = document.getElementById('delete-card-question') as HTMLParagraphElement;
@@ -370,7 +361,7 @@ deleteCardModalNoBtn.addEventListener('click', (e) => {
 });
 
 
-// Error Modal ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////// ERROR MODAL /////////////////////////////////////////////////////////////
 const errorModal = document.getElementById('modal-with-errors') as HTMLDivElement;
 const errorModalMessage = document.getElementById('modal-with-errors-text') as HTMLDivElement;
 const errorModalBtn = document.getElementById('modal-with-errors-btn') as HTMLButtonElement;
@@ -390,3 +381,110 @@ function closeErrorModal() {
 errorModalBtn.addEventListener('click', () => {
     closeErrorModal();
 }) ;
+
+
+///////////////////////////////////////////////////////////// DISPLAY CARDS /////////////////////////////////////////////////////////////
+const displayCardsContainer = document.getElementById('display-cards-container') as HTMLDivElement;
+let currentCardIndex = 0;
+const prevCardBtn = document.getElementById('prev-card') as HTMLButtonElement;
+const nextCardBtn = document.getElementById('next-card') as HTMLButtonElement;
+const currentCardIndexSpan = document.getElementById('current-card') as HTMLSpanElement;
+const totalCardsNumber = document.getElementById('total-cards') as HTMLSpanElement;
+
+function createCardsHTMLElementsArray(cards: Card[], category: string) {
+    let cardsArray: string[] = [];
+    let cardsCopy = [...cards];
+    if (category !== '') {
+        cardsCopy = cards.filter(card => card.category === category);
+    }
+    
+    cardsCopy.forEach((card, index) => {
+
+        if (index === 0) {
+            cardsArray.push(`<div class="card">
+                    <div class="card__wrapper">
+                        <div class="card__front is-active">
+                            <p class="card__front-text">${card.question}</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                        <div class="card__back">
+                            <p class="card__back-text">${card.answer}</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                    </div>
+                </div>`);
+        }
+        else {
+             cardsArray.push(`<div class="card card-right">
+                    <div class="card__wrapper">
+                        <div class="card__front is-active">
+                            <p class="card__front-text">${card.question}</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                        <div class="card__back">
+                            <p class="card__back-text">${card.answer}</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                    </div>
+                </div>`);
+        }
+    });
+    return cardsArray;
+}
+
+function addCardsToDOM(cards: string[]) {
+    cards.forEach(card => {
+        displayCardsContainer.innerHTML += card;
+        // add event listener to each card
+        
+    })
+}
+
+function addEventListenerToAllCards() {
+    let cards = displayCardsContainer.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            let clickedElement = e.target as HTMLElement;
+            let parent = clickedElement.closest('.card') as HTMLElement;
+            parent.classList.toggle('is-flipped');
+        });
+    });
+}
+
+function displayNextCard() {
+    if (currentCardIndex !== allCards.length - 1) {
+        let Cards = displayCardsContainer.querySelectorAll('.card');
+        Cards[currentCardIndex].classList.add('card-left');
+        Cards[currentCardIndex+1].classList.remove('card-right');
+        currentCardIndex++;
+    }
+}
+
+function displayPrevCard() {
+    if (currentCardIndex !== 0) {
+        let Cards = displayCardsContainer.querySelectorAll('.card');
+        Cards[currentCardIndex].classList.add('card-right');
+        Cards[currentCardIndex-1].classList.remove('card-left');
+        currentCardIndex--;
+    }
+}
+
+function updateCounter() {
+    currentCardIndexSpan.textContent = (currentCardIndex + 1).toString();
+    totalCardsNumber.textContent = allCards.length.toString();
+}
+
+addCardsToDOM(createCardsHTMLElementsArray(allCards, ''));
+addEventListenerToAllCards();
+
+nextCardBtn.addEventListener('click', () => {
+    displayNextCard();
+    updateCounter();
+});
+
+prevCardBtn.addEventListener('click', () => {
+    displayPrevCard();
+    updateCounter();
+});
+console.log(createCardsHTMLElementsArray(allCards, ''));
+updateCounter();

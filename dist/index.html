@@ -10,13 +10,15 @@
     <title>Memory Cards</title>
 </head>
 <body>
+
+    <!---------------------------------------------------------------------- HEADER --------------------------------------------------------------------->
     <header id="header" class="header">
         <h1 class="header__title">Memory Cards</h1>
         <a id="back-main-page-btn" class="header__back-icon hidden" href="#"><i class="fa-solid fa-chevron-left"></i></a>
     </header>
     <div class="main-container">
 
-        
+    <!---------------------------------------------------------------------- MAIN MENU --------------------------------------------------------------------->
         <section id="main-menu-section" class="section menu-section">
             <nav>
                 <ul class="menu-section__nav">
@@ -28,7 +30,35 @@
             </nav>
         </section>
 
+        <!---------------------------------------------------------------------- DISPLAY CARDS SECTION --------------------------------------------------------------------->
+        <section id="display-cards-section" class="section display-card-section hidden-section-right">
+            <div id="display-cards-container" class="display-card-section__card-container">
+        
+                <!-- <div class="card">
+                            <div class="card__wrapper">
+                                <div class="card__front is-active">
+                                    <p class="card__front-text">What is JS?</p>
+                                    <i class="fa-solid fa-rotate card__icon"></i>
+                                </div>
+                                <div class="card__back">
+                                    <p class="card__back-text">JavaScript, w skrócie JS – skryptowy oraz wieloparadygmatowy język programowania, stworzony przez firmę Netscape,
+                                    najczęściej stosowany na stronach internetowych. Twórcą JavaScriptu jest Brendan Eich.</p>
+                                    <i class="fa-solid fa-rotate card__icon"></i>
+                                </div>
+                            </div>
+                        </div> -->
+        
+            </div>
+            <div class="display-card-section__nav">
+                <button id="prev-card" class="display-card-section__nav-button"><i class="fa-solid fa-arrow-left"></i></button>
+                <p class="display-card-section__nav-info">
+                    <span id="current-card">1</span>/<span id="total-cards">10</span>
+                </p>
+                <button id="next-card" class="display-card-section__nav-button"><i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </section>
 
+    <!---------------------------------------------------------------------- ADD CARD SECTION --------------------------------------------------------------------->
         <section id="add-card-section" class="section add-card-section hidden-section-right">
             <form id="add-card-form" class="add-card-section__form">
                 <div class="add-card-section__form-element">
@@ -55,7 +85,7 @@
             </form>
         </section>
 
-
+    <!---------------------------------------------------------------------- DELETE CARDS SECTION --------------------------------------------------------------------->
         <section id="delete-cards-section" class="section delete-card-section hidden-section-right">
             <div id="delete-cards-list" class="delete-card-section__list">
                 <!-- <div class="delete-card-section__card">
@@ -75,7 +105,7 @@
 
         </section>
 
-
+    <!---------------------------------------------------------------------- MODIFY CARDS SECTION --------------------------------------------------------------------->
         <section id="modify-cards-section" class="section modify-card-section hidden-section-right">
             <div id="modify-cards-list" class="modify-card-section__list">
                 <!-- <div class="modify-card-section__card">
@@ -110,44 +140,21 @@
                             class="add-card-section__input add-card-section__add-new-category__button">Add</button>
                     </div>
                 </div>
-                <button id="confirm-modify-card-btn" class="add-card-section__add-card-btn">Add</button>
+                <button id="confirm-modify-card-btn" class="add-card-section__add-card-btn">Change</button>
             </form>
         </section>
 
-
-        <section id="display-cards-section" class="section display-card-section hidden-section-right">
-            <div class="display-card-section__card-container">
-                <div id="card" class="card">
-                    <div id="card-wrapper" class="card__wrapper">
-                        <div id="card-front" class="card__front is-active">
-                            <p class="card__front-text">What is JS?</p>
-                            <i class="fa-solid fa-rotate card__icon"></i>
-                        </div>
-                        <div id="card-back" class="card__back">
-                            <p class="card__back-text">JavaScript, w skrócie JS – skryptowy oraz wieloparadygmatowy język programowania, stworzony przez firmę Netscape,
-                            najczęściej stosowany na stronach internetowych. Twórcą JavaScriptu jest Brendan Eich.</p>
-                            <i class="fa-solid fa-rotate card__icon"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="display-card-section__nav">
-                <button id="prev-card" class="display-card-section__nav-button"><i class="fa-solid fa-arrow-left"></i></button>
-                <p class="display-card-section__nav-info">
-                    <span id="current-card">1</span>/<span id="total-cards">10</span>
-                </p>
-                <button id="next-card" class="display-card-section__nav-button"><i class="fa-solid fa-arrow-right"></i></button>
-            </div>
-        </section>
-
-
     </div>
+
+    <!---------------------------------------------------------------------- FOOTER --------------------------------------------------------------------->
     <footer id="footer" class="footer">
         <p class="footer__text">
             © Designed by Kacper Stępień. All rights reserved.
         </p>
     </footer>
 
+
+    <!---------------------------------------------------------------------- MODALS --------------------------------------------------------------------->
     <div id="delete-card-confirmation" class="delete-card-confirmation delete-card-confirmation__hidden">
         <p class="delete-card-confirmation__text">Are you sure you want to delete this card?</p>
         <p id="delete-card-question" class="delete-card-confirmation__question">What is JS?</p>
@@ -163,5 +170,6 @@
     </div>
 
     <div id="overlay" class="overlay overlay-hidden"></div>
+    
 </body>
 </html>
