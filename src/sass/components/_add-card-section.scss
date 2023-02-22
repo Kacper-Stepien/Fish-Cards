@@ -26,11 +26,11 @@
         border-radius: $border-radius-small;
         border: 2px solid $color-gray-light-1;
         outline: none;
-    }
 
-    &__input:active,
-    &__input:focus {
-        border: 2px solid $color-primary-light;
+        &:active,
+        &:focus {
+            border: 2px solid $color-primary-light;
+        }
     }
 
     &__textarea {
@@ -38,9 +38,9 @@
     }
 
     &__category-group {
+        @include flex(row, space-between, end);
         width: 100%;
         max-width: 62rem;
-        @include flex(row, space-between, end);
         gap: 2rem;
 
         @include respond(phone) {
@@ -82,11 +82,6 @@
 
     }
 
-    // &__add-new-category:active,
-    // &__add-new-category:focus {
-    //     border: 3px solid $color-gray-light-2;
-    // }
-
     &__add-card-btn {
         margin-top: 4rem;
         background-color: $color-primary-light;
@@ -97,10 +92,10 @@
         border-radius: $border-radius-small;
         color: $color-white;
         transition: all .2s ease-in-out;
-    }
 
-    &__add-card-btn:hover {
-        transform: translateY(-5px);
-        filter: brightness(1.1);
+        &:hover {
+            transform: translateY(-5px);
+            filter: brightness(1.05);
+        }
     }
 }

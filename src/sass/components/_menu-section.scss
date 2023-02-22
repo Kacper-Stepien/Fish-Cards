@@ -1,6 +1,5 @@
 .menu-section {
-
-    padding: 6rem;
+    padding: $menu-section-padding;
 
     &__nav {
         list-style: none;
@@ -21,16 +20,16 @@
         transition: $quick-animation;
         cursor: pointer;
 
-        &__link {
-            color: $color-white;
-            text-decoration: none;
+        &--main {
+            background-color: $color-primary;
+            max-width: 44rem;
+            width: 100%;
         }
     }
 
-    &__element-main {
-        background-color: $color-primary;
-        max-width: 44rem;
-        width: 100%;
+    &__link {
+        color: $color-white;
+        text-decoration: none;
     }
 
     &__element:hover {

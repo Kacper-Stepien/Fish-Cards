@@ -1,13 +1,11 @@
 .modal-with-errors {
-    position: absolute;
-    top: 10%;
-    left: 50%;
+    @include flex(column, center, center);
+    @include absolute(10%, 50%);
     transform: translateX(-50%);
     background-color: $color-primary;
     padding: 2.4rem 4rem;
     border-radius: $border-radius-small;
     z-index: 20;
-    @include flex(column, center, center);
     gap: 2rem;
     transition: $quick-animation;
 

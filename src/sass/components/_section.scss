@@ -1,8 +1,4 @@
 .section {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+    @include absoluteAllSpace();
     transition: all .5s ease-in-out;
 }

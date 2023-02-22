@@ -9,4 +9,15 @@
         text-align: center;
         cursor: default;
     }
+
+    &__author {
+        font-style: normal;
+        cursor: pointer;
+        transition: $quick-animation;
+        
+        &:hover {
+            color: $color-primary;
+            text-decoration: underline;
+        }
+    }
 }

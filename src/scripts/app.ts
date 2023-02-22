@@ -86,7 +86,7 @@ class Card {
     }
 
     createCardRightHTMLElement() {
-        return `<div class="card card-right">
+        return `<div class="card card--right">
                     <div class="card__wrapper">
                         <div class="card__front is-active">
                             <p class="card__front-text">${this.question}</p>
@@ -491,8 +491,8 @@ function addEventListenerToAllCards() {
 function displayNextCard() {
     if (currentCardIndex !== allCards.length - 1) {
         let Cards = displayCardsContainer.querySelectorAll('.card');
-        Cards[currentCardIndex].classList.add('card-left');
-        Cards[currentCardIndex+1].classList.remove('card-right');
+        Cards[currentCardIndex].classList.add('card--left');
+        Cards[currentCardIndex+1].classList.remove('card--right');
         currentCardIndex++;
     }
 }
@@ -500,8 +500,8 @@ function displayNextCard() {
 function displayPrevCard() {
     if (currentCardIndex !== 0) {
         let Cards = displayCardsContainer.querySelectorAll('.card');
-        Cards[currentCardIndex].classList.add('card-right');
-        Cards[currentCardIndex-1].classList.remove('card-left');
+        Cards[currentCardIndex].classList.add('card--right');
+        Cards[currentCardIndex-1].classList.remove('card--left');
         currentCardIndex--;
     }
 }

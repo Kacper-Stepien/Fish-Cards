@@ -16,23 +16,25 @@
         <h1 class="header__title">Memory Cards</h1>
         <a id="back-main-page-btn" class="header__back-icon hidden" href="#"><i class="fa-solid fa-chevron-left"></i></a>
     </header>
+
+    <!---------------------------------------------------------------------- MAIN --------------------------------------------------------------------->
     <div class="main-container">
 
     <!---------------------------------------------------------------------- MAIN MENU --------------------------------------------------------------------->
         <section id="main-menu-section" class="section menu-section">
             <nav>
                 <ul class="menu-section__nav">
-                    <li id="nav-start-practicing-btn" class="menu-section__element menu-section__element-main"><a class="menu-section__element__link" href="#">Start practicing</a></li>
-                    <li id="nav-add-card-btn" class="menu-section__element"><a class="menu-section__element__link" href="#">Add new card</a></li>
-                    <li id="nav-modify-card-btn" class="menu-section__element"><a class="menu-section__element__link" href="#">Modify</a></li>
-                    <li id="nav-delete-card-btn" class="menu-section__element"><a class="menu-section__element__link" href="#">Delete card</a></li>
+                    <li id="nav-start-practicing-btn" class="menu-section__element menu-section__element--main"><a class="menu-section__link" href="#">Start practicing</a></li>
+                    <li id="nav-add-card-btn" class="menu-section__element"><a class="menu-section__link" href="#">Add new card</a></li>
+                    <li id="nav-modify-card-btn" class="menu-section__element"><a class="menu-section__link" href="#">Modify</a></li>
+                    <li id="nav-delete-card-btn" class="menu-section__element"><a class="menu-section__link" href="#">Delete card</a></li>
                 </ul>
             </nav>
         </section>
 
         <!---------------------------------------------------------------------- DISPLAY CARDS SECTION --------------------------------------------------------------------->
-        <section id="display-cards-section" class="section display-card-section hidden-section-right">
-            <div id="display-cards-container" class="display-card-section__card-container">
+        <section id="display-cards-section" class="section display-cards-section hidden-section-right">
+            <div id="display-cards-container" class="display-cards-section__cards-container">
         
                 <!-- <div class="card">
                             <div class="card__wrapper">
@@ -49,12 +51,12 @@
                         </div> -->
         
             </div>
-            <div class="display-card-section__nav">
-                <button id="prev-card" class="display-card-section__nav-button"><i class="fa-solid fa-arrow-left"></i></button>
-                <p class="display-card-section__nav-info">
+            <div class="display-cards-section__nav">
+                <button id="prev-card" class="display-cards-section__nav-button"><i class="fa-solid fa-arrow-left"></i></button>
+                <p class="display-cards-section__nav-info">
                     <span id="current-card">1</span>/<span id="total-cards">10</span>
                 </p>
-                <button id="next-card" class="display-card-section__nav-button"><i class="fa-solid fa-arrow-right"></i></button>
+                <button id="next-card" class="display-cards-section__nav-button"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </section>
 
@@ -149,7 +151,7 @@
     <!---------------------------------------------------------------------- FOOTER --------------------------------------------------------------------->
     <footer id="footer" class="footer">
         <p class="footer__text">
-            © Designed by Kacper Stępień. All rights reserved.
+            © Designed by <em class="footer__author">Kacper Stępień</em>. All rights reserved.
         </p>
     </footer>
 
