@@ -1,3 +1,51 @@
+///////////////////////////////////////////////////////////// GLOBAL VARIABLES /////////////////////////////////////////////////////////////
+const header = document.getElementById('header') as HTMLDivElement;
+const footer = document.getElementById('footer') as HTMLDivElement;
+const mainMenuSection = document.getElementById('main-menu-section') as HTMLDivElement;
+const displayCardsSection = document.getElementById('display-cards-section') as HTMLDivElement;
+const addCardSection = document.getElementById('add-card-section') as HTMLDivElement;
+const deleteCardsSection = document.getElementById('delete-cards-section') as HTMLDivElement;
+const modifyCardsSection = document.getElementById('modify-cards-section') as HTMLDivElement;
+const modifyCardsSection2 = document.getElementById('modify-card-section') as HTMLDivElement;
+const navAddCardBtn = document.getElementById('nav-add-card-btn') as HTMLElement;
+const navStartPracticingBtn = document.getElementById('nav-start-practicing-btn') as HTMLElement;
+const navDeleteCardsBtn = document.getElementById('nav-delete-card-btn') as HTMLElement;
+const navModifyCardsBtn = document.getElementById('nav-modify-card-btn') as HTMLElement;
+const backMainPageBtn = document.getElementById('back-main-page-btn') as HTMLElement;
+
+const addCardForm = document.getElementById('add-card-form') as HTMLFormElement;
+const addCardQuestionInput = document.getElementById('add-card-question-input') as HTMLInputElement;
+const addCardAnswerInput = document.getElementById('add-card-answer-input') as HTMLTextAreaElement;
+const chooseCategorySelect = document.getElementById('choose-category-select') as HTMLSelectElement;
+const addNewCategoryInput = document.getElementById('add-new-category-input') as HTMLInputElement;
+const addNewCategoryBtn = document.getElementById('add-new-category-btn') as HTMLButtonElement;
+const confirmAddCardBtn = document.getElementById('confirm-add-card-btn') as HTMLButtonElement;
+
+const modifyCardsList = document.getElementById('modify-cards-list') as HTMLDivElement;
+const modifyCardQuestionInput = document.getElementById('modify-card-question-input') as HTMLInputElement;
+const modifyCardAnswerInput = document.getElementById('modify-card-answer-input') as HTMLTextAreaElement;
+const modifyCardCategorySelect = document.getElementById('modify-choose-category-select') as HTMLSelectElement;
+const modifyCardNewCategoryInput = document.getElementById('modify-new-category-input') as HTMLInputElement;
+const modifyCardNewCategoryBtn = document.getElementById('modify-new-category-btn') as HTMLButtonElement;
+const modifyCardConfirmBtn = document.getElementById('confirm-modify-card-btn') as HTMLButtonElement;
+
+const deleteCardsList = document.getElementById('delete-cards-list') as HTMLDivElement;
+const deleteCardConfirmationModal = document.getElementById('delete-card-confirmation') as HTMLDivElement;
+const deleteCardModalQuestion = document.getElementById('delete-card-question') as HTMLParagraphElement;
+const deleteCardModalYesBtn = document.getElementById('delete-card-confirmation__yes-btn') as HTMLButtonElement;
+const deleteCardModalNoBtn = document.getElementById('delete-card-confirmation__no-btn') as HTMLButtonElement;
+const overlay = document.getElementById('overlay') as HTMLDivElement;
+
+const displayCardsContainer = document.getElementById('display-cards-container') as HTMLDivElement;
+const prevCardBtn = document.getElementById('prev-card') as HTMLButtonElement;
+const nextCardBtn = document.getElementById('next-card') as HTMLButtonElement;
+const currentCardIndexSpan = document.getElementById('current-card') as HTMLSpanElement;
+const totalCardsNumber = document.getElementById('total-cards') as HTMLSpanElement;
+
+const errorModal = document.getElementById('modal-with-errors') as HTMLDivElement;
+const errorModalMessage = document.getElementById('modal-with-errors-text') as HTMLDivElement;
+const errorModalBtn = document.getElementById('modal-with-errors-btn') as HTMLButtonElement;
+
 ///////////////////////////////////////////////////////////// CARD CLASS /////////////////////////////////////////////////////////////
 class Card {
     question: string;
@@ -9,52 +57,110 @@ class Card {
         this.answer = answer;
         this.category = category;
     }
+
+    setQuestion(question: string) {
+        this.question = question;
+    }
+
+    setAnswer(answer: string) {
+        this.answer = answer;
+    }
+
+    setCategory(category: string) {
+        this.category = category;
+    }
+
+    createCardHTMLElement() {
+        return `<div class="card">
+                    <div class="card__wrapper">
+                        <div class="card__front is-active">
+                            <p class="card__front-text">${this.question}</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                        <div class="card__back">
+                            <p class="card__back-text">${this.answer}</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                    </div> 
+                </div>`
+    }
+
+    createCardRightHTMLElement() {
+        return `<div class="card card-right">
+                    <div class="card__wrapper">
+                        <div class="card__front is-active">
+                            <p class="card__front-text">${this.question}</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                        <div class="card__back">
+                            <p class="card__back-text">${this.answer}</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                    </div>
+                </div>`
+    }
 }
 
 ///////////////////////////////////////////////////////////// INITIALIZE /////////////////////////////////////////////////////////////
+let allCards: Card[] = getAllCardsFromLocalStorage();
+let allCardsElement: string[] = createCardsHTMLElementsArray(allCards, '');
+let categories: string[] = getCategoriesFromLocalStorage();
+let currentCardIndex = 0;
+let cardQuestionToModify = ''; 
+let cardQuestionToDelete: string = '';
+addCategoriesToSelectElement(chooseCategorySelect);
+updateView();
 
+function updateView() {
+    updateCounter();
+    addCardsToDOM(createCardsHTMLElementsArray(allCards, ''));
+    addEventListenerToAllCards();
+    displayCardsToModify(allCards);
+    displayCardsToDelete(allCards);
+    clearForm();
+}
 
-///////////////////////////////////////////////////////////// Navigation of Sections /////////////////////////////////////////////////////////////
-const header = document.getElementById('header') as HTMLDivElement;
-const footer = document.getElementById('footer') as HTMLDivElement;
+////////////////////////////////////////////////////////// NAVIGATION ////////////////////////////////////////////////////////////////
+function moveSectionToRight(section: HTMLDivElement) {
+    section.classList.add('hidden-section-right');
+}
 
-const mainMenuSection = document.getElementById('main-menu-section') as HTMLDivElement;
-const displayCardsSection = document.getElementById('display-cards-section') as HTMLDivElement;
-const addCardSection = document.getElementById('add-card-section') as HTMLDivElement;
-const deleteCardsSection = document.getElementById('delete-cards-section') as HTMLDivElement;
-const modifyCardsSection = document.getElementById('modify-cards-section') as HTMLDivElement;
-const modifyCardsSection2 = document.getElementById('modify-card-section') as HTMLDivElement;
+function moveSectionToCenter(section: HTMLDivElement) {
+    section.classList.remove('hidden-section-right');
+    section.classList.remove('hidden-section-left');
+}
 
-const navAddCardBtn = document.getElementById('nav-add-card-btn') as HTMLElement;
-const navStartPracticingBtn = document.getElementById('nav-start-practicing-btn') as HTMLElement;
-const navDeleteCardsBtn = document.getElementById('nav-delete-card-btn') as HTMLElement;
-const navModifyCardsBtn = document.getElementById('nav-modify-card-btn') as HTMLElement;
-
-const backMainPageBtn = document.getElementById('back-main-page-btn') as HTMLElement;
+function moveSectionToLeft(section: HTMLDivElement) {
+    section.classList.add('hidden-section-left');
+}
 
 function displayMainMenu() {
-    mainMenuSection.classList.remove('hidden-section-left');
-    addCardSection.classList.add('hidden-section-right');
-    displayCardsSection.classList.add('hidden-section-right');
-    deleteCardsSection.classList.add('hidden-section-right');
-    modifyCardsSection.classList.add('hidden-section-right');
+    moveSectionToCenter(mainMenuSection);
+    moveSectionToRight(addCardSection);
+    moveSectionToRight(displayCardsSection);
+    moveSectionToRight(deleteCardsSection);
+    moveSectionToRight(modifyCardsSection);
     backMainPageBtn.classList.add('hidden');
 }
 
 function displaySection(section: HTMLDivElement) {
-    mainMenuSection.classList.add('hidden-section-left');
-    section.classList.remove('hidden-section-right');
+    moveSectionToLeft(mainMenuSection);
+    moveSectionToCenter(section);
     backMainPageBtn.classList.remove('hidden');
 }
 
 navAddCardBtn.addEventListener('click', () => displaySection(addCardSection));
+
 navStartPracticingBtn.addEventListener('click', () => displaySection(displayCardsSection));
+
 navDeleteCardsBtn.addEventListener('click', () => displaySection(deleteCardsSection));
+
 navModifyCardsBtn.addEventListener('click', () => displaySection(modifyCardsSection));
+
 backMainPageBtn.addEventListener('click', ()=> {
     if (!modifyCardsSection2.classList.contains('hidden-section-right')) {
-        modifyCardsSection2.classList.add('hidden-section-right');
-        modifyCardsSection.classList.remove('hidden-section-left');
+        moveSectionToRight(modifyCardsSection2);
+        moveSectionToCenter(modifyCardsSection);
     }
     else {
         displayMainMenu();
@@ -62,19 +168,6 @@ backMainPageBtn.addEventListener('click', ()=> {
 });
 
 ///////////////////////////////////////////////////////////// ADD NEW CARD /////////////////////////////////////////////////////////////
-const addCardForm = document.getElementById('add-card-form') as HTMLFormElement;
-const addCardQuestionInput = document.getElementById('add-card-question-input') as HTMLInputElement;
-const addCardAnswerInput = document.getElementById('add-card-answer-input') as HTMLTextAreaElement;
-const chooseCategorySelect = document.getElementById('choose-category-select') as HTMLSelectElement;
-const addNewCategoryInput = document.getElementById('add-new-category-input') as HTMLInputElement;
-const addNewCategoryBtn = document.getElementById('add-new-category-btn') as HTMLButtonElement;
-const confirmAddCardBtn = document.getElementById('confirm-add-card-btn') as HTMLButtonElement;
-
-let allCards: Card[] = getAllCardsFromLocalStorage();
-let allCardsElement: string[] = createCardsHTMLElementsArray(allCards, '');
-let categories: string[] = getCategoriesFromLocalStorage();
-addCategoriesToSelectElement(chooseCategorySelect);
-
 function validateCardData(question: string, answer: string): boolean {
     if (question === '' || answer === '') {
         return false;
@@ -112,8 +205,8 @@ function addCategoriesToSelectElement(select: HTMLSelectElement) {
     });
 }
 
-function clearNewCategoryInput() {
-    addNewCategoryInput.value = '';
+function clearInput(input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) {
+    input.value = '';
 }
 
 addNewCategoryBtn.addEventListener('click', (e) => {
@@ -122,12 +215,16 @@ addNewCategoryBtn.addEventListener('click', (e) => {
     addNewCategoryToLocalStorage(newCategory);
     categories = getCategoriesFromLocalStorage();
     addCategoriesToSelectElement(chooseCategorySelect);
-    clearNewCategoryInput();
+    clearInput(addNewCategoryInput);
     chooseCategorySelect.value = newCategory;
 });
 
 function getAllCardsFromLocalStorage() {
-    let cards = localStorage.getItem('Memory-Cards-Cards') ? JSON.parse(localStorage.getItem('Memory-Cards-Cards') as string) : [];
+    let dataFromLocalStorage = localStorage.getItem('Memory-Cards-Cards') ? JSON.parse(localStorage.getItem('Memory-Cards-Cards') as string) : [];
+    let cards: Card[] = [];
+    dataFromLocalStorage.forEach((card: Card) => {
+        cards.push(new Card(card.question, card.answer, card.category));
+    });
     return cards;
 }
 
@@ -138,16 +235,16 @@ function addCardToLocalStorage(question: string, answer: string, category: strin
 }
 
 function clearForm() {
-    addCardQuestionInput.value = '';
-    addCardAnswerInput.value = '';
-    chooseCategorySelect.value = '';  
+    clearInput(addCardQuestionInput);
+    clearInput(addCardAnswerInput);
+    clearInput(chooseCategorySelect); 
 }
 
 confirmAddCardBtn.addEventListener('click', (e) => {
     e.preventDefault();
     let question = addCardQuestionInput.value;
     let answer = addCardAnswerInput.value;
-    let category = chooseCategorySelect.value === 'Choose category' ? '' : chooseCategorySelect.value;
+    let category = chooseCategorySelect.value;
     if (checkIfQuestionExists(question)) {
         openErrorModal('This question already exists');
     } 
@@ -156,27 +253,12 @@ confirmAddCardBtn.addEventListener('click', (e) => {
     }
     else {
         addCardToLocalStorage(question, answer, category);
-        displayCardsToModify(allCards);
-        displayCardsToDelete(allCards);
-        clearForm();
+        updateView();
         openErrorModal('Card added successfully');
     }
 });
 
-
 ///////////////////////////////////////////////////////////// MODIFY CARDS /////////////////////////////////////////////////////////////
-const modifyCardsList = document.getElementById('modify-cards-list') as HTMLDivElement;
-const modifyCardQuestionInput = document.getElementById('modify-card-question-input') as HTMLInputElement;
-const modifyCardAnswerInput = document.getElementById('modify-card-answer-input') as HTMLTextAreaElement;
-const modifyCardCategorySelect = document.getElementById('modify-choose-category-select') as HTMLSelectElement;
-const modifyCardNewCategoryInput = document.getElementById('modify-new-category-input') as HTMLInputElement;
-const modifyCardNewCategoryBtn = document.getElementById('modify-new-category-btn') as HTMLButtonElement;
-const modifyCardConfirmBtn = document.getElementById('confirm-modify-card-btn') as HTMLButtonElement;
-
-let cardQuestionToModify = ''; 
-
-displayCardsToModify(allCards);
-
 function displayCardsToModify(cards: Card[]) {
     modifyCardsList.innerHTML = '';
     cards.forEach(card => {
@@ -230,8 +312,8 @@ function displayModifyCardForm(question: string, answer: string, category: strin
     modifyCardQuestionInput.value = question;
     modifyCardAnswerInput.value = answer;
     modifyCardCategorySelect.value = category;
-    modifyCardsSection2.classList.remove('hidden-section-right');
-    modifyCardsSection.classList.add('hidden-section-left');
+    moveSectionToCenter(modifyCardsSection2);
+    moveSectionToLeft(modifyCardsSection);
 }
 
 modifyCardsList.addEventListener('click', (e) => {
@@ -243,7 +325,6 @@ modifyCardsList.addEventListener('click', (e) => {
             let answer = getCardAnswerByQuestion(question);
             let category = getCardCategoryByQuestion(question);
             cardQuestionToModify = question;
-
             displayModifyCardForm(question, answer, category);
         }
     }
@@ -259,13 +340,11 @@ modifyCardConfirmBtn.addEventListener('click', (e) => {
         openErrorModal('Please fill in all fields');
     }
     else {
-        console.log("zmieniam");
         changeCardData(question, answer, category);
-        displayCardsToModify(allCards);
-        displayCardsToDelete(allCards);
+        updateView();
         openErrorModal('Card modified successfully');
-        modifyCardsSection.classList.remove('hidden-section-left');
-        modifyCardsSection2.classList.add('hidden-section-right');
+        moveSectionToCenter(modifyCardsSection);
+        moveSectionToCenter(modifyCardsSection2);
     }
 });
 
@@ -276,21 +355,12 @@ modifyCardNewCategoryBtn.addEventListener('click', (e) => {
     categories = getCategoriesFromLocalStorage();
     addCategoriesToSelectElement(modifyCardCategorySelect);
     addCategoriesToSelectElement(chooseCategorySelect);
-    clearNewCategoryInput();
+    clearInput(modifyCardNewCategoryInput);
     modifyCardCategorySelect.value = newCategory;
 });
 
 
 ///////////////////////////////////////////////////////////// DELETE CARDS /////////////////////////////////////////////////////////////
-const deleteCardsList = document.getElementById('delete-cards-list') as HTMLDivElement;
-const deleteCardConfirmationModal = document.getElementById('delete-card-confirmation') as HTMLDivElement;
-const deleteCardModalQuestion = document.getElementById('delete-card-question') as HTMLParagraphElement;
-const deleteCardModalYesBtn = document.getElementById('delete-card-confirmation__yes-btn') as HTMLButtonElement;
-const deleteCardModalNoBtn = document.getElementById('delete-card-confirmation__no-btn') as HTMLButtonElement;
-const overlay = document.getElementById('overlay') as HTMLDivElement;
-let questionOfCardToDelete: string = '';
-
-
 function displayCardsToDelete(cards: Card[]) {
     deleteCardsList.innerHTML = '';
     cards.forEach(card => {
@@ -300,18 +370,16 @@ function displayCardsToDelete(cards: Card[]) {
                                         </div>`
     });
 }
-displayCardsToDelete(allCards);
 
 deleteCardsList.addEventListener('click', (e) => {
-
     if (e.target !== null) {
         if (e.target !== deleteCardsList) {
             let clickedElement = e.target as HTMLElement;
             let parent = clickedElement.closest('.delete-card-section__card') as HTMLElement;
             let title = parent.querySelector('.delete-card-section__card-question')?.textContent;
             if (title !== null && title !== undefined) {
-                questionOfCardToDelete = title;
-                showDeleteCardConfirmationModal(questionOfCardToDelete);
+                cardQuestionToDelete = title;
+                showDeleteCardConfirmationModal(cardQuestionToDelete);
             }
        }
     }
@@ -349,10 +417,13 @@ function deleteCardFromLocalStorage(question: string) {
 
 deleteCardModalYesBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    deleteCardFromLocalStorage(questionOfCardToDelete);
+    deleteCardFromLocalStorage(cardQuestionToDelete);
     closeDeleteCardConfirmationModal();
     displayCardsToDelete(allCards);
     displayCardsToModify(allCards);
+    addCardsToDOM(createCardsHTMLElementsArray(allCards, ''));
+    addEventListenerToAllCards();   
+    updateCounter();
 });
 
 deleteCardModalNoBtn.addEventListener('click', (e) => {
@@ -362,10 +433,6 @@ deleteCardModalNoBtn.addEventListener('click', (e) => {
 
 
 ///////////////////////////////////////////////////////////// ERROR MODAL /////////////////////////////////////////////////////////////
-const errorModal = document.getElementById('modal-with-errors') as HTMLDivElement;
-const errorModalMessage = document.getElementById('modal-with-errors-text') as HTMLDivElement;
-const errorModalBtn = document.getElementById('modal-with-errors-btn') as HTMLButtonElement;
-
 function openErrorModal(message: string) {
     errorModalMessage.textContent = message;
     errorModal.classList.remove('error-modal-hidden');
@@ -384,59 +451,29 @@ errorModalBtn.addEventListener('click', () => {
 
 
 ///////////////////////////////////////////////////////////// DISPLAY CARDS /////////////////////////////////////////////////////////////
-const displayCardsContainer = document.getElementById('display-cards-container') as HTMLDivElement;
-let currentCardIndex = 0;
-const prevCardBtn = document.getElementById('prev-card') as HTMLButtonElement;
-const nextCardBtn = document.getElementById('next-card') as HTMLButtonElement;
-const currentCardIndexSpan = document.getElementById('current-card') as HTMLSpanElement;
-const totalCardsNumber = document.getElementById('total-cards') as HTMLSpanElement;
-
 function createCardsHTMLElementsArray(cards: Card[], category: string) {
-    let cardsArray: string[] = [];
+    let cardsMarkupArray: string[] = [];
     let cardsCopy = [...cards];
     if (category !== '') {
         cardsCopy = cards.filter(card => card.category === category);
     }
     
     cardsCopy.forEach((card, index) => {
-
         if (index === 0) {
-            cardsArray.push(`<div class="card">
-                    <div class="card__wrapper">
-                        <div class="card__front is-active">
-                            <p class="card__front-text">${card.question}</p>
-                            <i class="fa-solid fa-rotate card__icon"></i>
-                        </div>
-                        <div class="card__back">
-                            <p class="card__back-text">${card.answer}</p>
-                            <i class="fa-solid fa-rotate card__icon"></i>
-                        </div>
-                    </div>
-                </div>`);
+            cardsMarkupArray.push(card.createCardHTMLElement());
         }
         else {
-             cardsArray.push(`<div class="card card-right">
-                    <div class="card__wrapper">
-                        <div class="card__front is-active">
-                            <p class="card__front-text">${card.question}</p>
-                            <i class="fa-solid fa-rotate card__icon"></i>
-                        </div>
-                        <div class="card__back">
-                            <p class="card__back-text">${card.answer}</p>
-                            <i class="fa-solid fa-rotate card__icon"></i>
-                        </div>
-                    </div>
-                </div>`);
+             cardsMarkupArray.push(card.createCardRightHTMLElement());
         }
     });
-    return cardsArray;
+    return cardsMarkupArray;
 }
 
 function addCardsToDOM(cards: string[]) {
+    currentCardIndex = 0;
+    displayCardsContainer.innerHTML = '';
     cards.forEach(card => {
-        displayCardsContainer.innerHTML += card;
-        // add event listener to each card
-        
+        displayCardsContainer.innerHTML += card;        
     })
 }
 
@@ -474,8 +511,6 @@ function updateCounter() {
     totalCardsNumber.textContent = allCards.length.toString();
 }
 
-addCardsToDOM(createCardsHTMLElementsArray(allCards, ''));
-addEventListenerToAllCards();
 
 nextCardBtn.addEventListener('click', () => {
     displayNextCard();
@@ -486,5 +521,3 @@ prevCardBtn.addEventListener('click', () => {
     displayPrevCard();
     updateCounter();
 });
-console.log(createCardsHTMLElementsArray(allCards, ''));
-updateCounter();

@@ -1,14 +1,5 @@
 "use strict";
-///////////////////////////////////////////////////////////// CARD CLASS /////////////////////////////////////////////////////////////
-class Card {
-    constructor(question, answer, category) {
-        this.question = question;
-        this.answer = answer;
-        this.category = category;
-    }
-}
-///////////////////////////////////////////////////////////// INITIALIZE /////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////// Navigation of Sections /////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////// GLOBAL VARIABLES /////////////////////////////////////////////////////////////
 const header = document.getElementById('header');
 const footer = document.getElementById('footer');
 const mainMenuSection = document.getElementById('main-menu-section');
@@ -22,17 +13,118 @@ const navStartPracticingBtn = document.getElementById('nav-start-practicing-btn'
 const navDeleteCardsBtn = document.getElementById('nav-delete-card-btn');
 const navModifyCardsBtn = document.getElementById('nav-modify-card-btn');
 const backMainPageBtn = document.getElementById('back-main-page-btn');
+const addCardForm = document.getElementById('add-card-form');
+const addCardQuestionInput = document.getElementById('add-card-question-input');
+const addCardAnswerInput = document.getElementById('add-card-answer-input');
+const chooseCategorySelect = document.getElementById('choose-category-select');
+const addNewCategoryInput = document.getElementById('add-new-category-input');
+const addNewCategoryBtn = document.getElementById('add-new-category-btn');
+const confirmAddCardBtn = document.getElementById('confirm-add-card-btn');
+const modifyCardsList = document.getElementById('modify-cards-list');
+const modifyCardQuestionInput = document.getElementById('modify-card-question-input');
+const modifyCardAnswerInput = document.getElementById('modify-card-answer-input');
+const modifyCardCategorySelect = document.getElementById('modify-choose-category-select');
+const modifyCardNewCategoryInput = document.getElementById('modify-new-category-input');
+const modifyCardNewCategoryBtn = document.getElementById('modify-new-category-btn');
+const modifyCardConfirmBtn = document.getElementById('confirm-modify-card-btn');
+const deleteCardsList = document.getElementById('delete-cards-list');
+const deleteCardConfirmationModal = document.getElementById('delete-card-confirmation');
+const deleteCardModalQuestion = document.getElementById('delete-card-question');
+const deleteCardModalYesBtn = document.getElementById('delete-card-confirmation__yes-btn');
+const deleteCardModalNoBtn = document.getElementById('delete-card-confirmation__no-btn');
+const overlay = document.getElementById('overlay');
+const displayCardsContainer = document.getElementById('display-cards-container');
+const prevCardBtn = document.getElementById('prev-card');
+const nextCardBtn = document.getElementById('next-card');
+const currentCardIndexSpan = document.getElementById('current-card');
+const totalCardsNumber = document.getElementById('total-cards');
+const errorModal = document.getElementById('modal-with-errors');
+const errorModalMessage = document.getElementById('modal-with-errors-text');
+const errorModalBtn = document.getElementById('modal-with-errors-btn');
+///////////////////////////////////////////////////////////// CARD CLASS /////////////////////////////////////////////////////////////
+class Card {
+    constructor(question, answer, category) {
+        this.question = question;
+        this.answer = answer;
+        this.category = category;
+    }
+    setQuestion(question) {
+        this.question = question;
+    }
+    setAnswer(answer) {
+        this.answer = answer;
+    }
+    setCategory(category) {
+        this.category = category;
+    }
+    createCardHTMLElement() {
+        return `<div class="card">
+                    <div class="card__wrapper">
+                        <div class="card__front is-active">
+                            <p class="card__front-text">${this.question}</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                        <div class="card__back">
+                            <p class="card__back-text">${this.answer}</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                    </div> 
+                </div>`;
+    }
+    createCardRightHTMLElement() {
+        return `<div class="card card-right">
+                    <div class="card__wrapper">
+                        <div class="card__front is-active">
+                            <p class="card__front-text">${this.question}</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                        <div class="card__back">
+                            <p class="card__back-text">${this.answer}</p>
+                            <i class="fa-solid fa-rotate card__icon"></i>
+                        </div>
+                    </div>
+                </div>`;
+    }
+}
+///////////////////////////////////////////////////////////// INITIALIZE /////////////////////////////////////////////////////////////
+let allCards = getAllCardsFromLocalStorage();
+let allCardsElement = createCardsHTMLElementsArray(allCards, '');
+let categories = getCategoriesFromLocalStorage();
+let currentCardIndex = 0;
+let cardQuestionToModify = '';
+let cardQuestionToDelete = '';
+addCategoriesToSelectElement(chooseCategorySelect);
+updateView();
+function updateView() {
+    updateCounter();
+    addCardsToDOM(createCardsHTMLElementsArray(allCards, ''));
+    addEventListenerToAllCards();
+    displayCardsToModify(allCards);
+    displayCardsToDelete(allCards);
+    clearForm();
+}
+////////////////////////////////////////////////////////// NAVIGATION ////////////////////////////////////////////////////////////////
+function moveSectionToRight(section) {
+    section.classList.add('hidden-section-right');
+}
+function moveSectionToCenter(section) {
+    section.classList.remove('hidden-section-right');
+    section.classList.remove('hidden-section-left');
+}
+function moveSectionToLeft(section) {
+    section.classList.add('hidden-section-left');
+}
 function displayMainMenu() {
-    mainMenuSection.classList.remove('hidden-section-left');
-    addCardSection.classList.add('hidden-section-right');
-    displayCardsSection.classList.add('hidden-section-right');
-    deleteCardsSection.classList.add('hidden-section-right');
-    modifyCardsSection.classList.add('hidden-section-right');
+    moveSectionToCenter(mainMenuSection);
+    moveSectionToRight(addCardSection);
+    moveSectionToRight(displayCardsSection);
+    moveSectionToRight(deleteCardsSection);
+    moveSectionToRight(modifyCardsSection);
     backMainPageBtn.classList.add('hidden');
 }
 function displaySection(section) {
-    mainMenuSection.classList.add('hidden-section-left');
-    section.classList.remove('hidden-section-right');
+    moveSectionToLeft(mainMenuSection);
+    moveSectionToCenter(section);
     backMainPageBtn.classList.remove('hidden');
 }
 navAddCardBtn.addEventListener('click', () => displaySection(addCardSection));
@@ -41,25 +133,14 @@ navDeleteCardsBtn.addEventListener('click', () => displaySection(deleteCardsSect
 navModifyCardsBtn.addEventListener('click', () => displaySection(modifyCardsSection));
 backMainPageBtn.addEventListener('click', () => {
     if (!modifyCardsSection2.classList.contains('hidden-section-right')) {
-        modifyCardsSection2.classList.add('hidden-section-right');
-        modifyCardsSection.classList.remove('hidden-section-left');
+        moveSectionToRight(modifyCardsSection2);
+        moveSectionToCenter(modifyCardsSection);
     }
     else {
         displayMainMenu();
     }
 });
 ///////////////////////////////////////////////////////////// ADD NEW CARD /////////////////////////////////////////////////////////////
-const addCardForm = document.getElementById('add-card-form');
-const addCardQuestionInput = document.getElementById('add-card-question-input');
-const addCardAnswerInput = document.getElementById('add-card-answer-input');
-const chooseCategorySelect = document.getElementById('choose-category-select');
-const addNewCategoryInput = document.getElementById('add-new-category-input');
-const addNewCategoryBtn = document.getElementById('add-new-category-btn');
-const confirmAddCardBtn = document.getElementById('confirm-add-card-btn');
-let allCards = getAllCardsFromLocalStorage();
-let allCardsElement = createCardsHTMLElementsArray(allCards, '');
-let categories = getCategoriesFromLocalStorage();
-addCategoriesToSelectElement(chooseCategorySelect);
 function validateCardData(question, answer) {
     if (question === '' || answer === '') {
         return false;
@@ -93,8 +174,8 @@ function addCategoriesToSelectElement(select) {
         select.innerHTML += `<option value="${category}">${category}</option>`;
     });
 }
-function clearNewCategoryInput() {
-    addNewCategoryInput.value = '';
+function clearInput(input) {
+    input.value = '';
 }
 addNewCategoryBtn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -102,11 +183,15 @@ addNewCategoryBtn.addEventListener('click', (e) => {
     addNewCategoryToLocalStorage(newCategory);
     categories = getCategoriesFromLocalStorage();
     addCategoriesToSelectElement(chooseCategorySelect);
-    clearNewCategoryInput();
+    clearInput(addNewCategoryInput);
     chooseCategorySelect.value = newCategory;
 });
 function getAllCardsFromLocalStorage() {
-    let cards = localStorage.getItem('Memory-Cards-Cards') ? JSON.parse(localStorage.getItem('Memory-Cards-Cards')) : [];
+    let dataFromLocalStorage = localStorage.getItem('Memory-Cards-Cards') ? JSON.parse(localStorage.getItem('Memory-Cards-Cards')) : [];
+    let cards = [];
+    dataFromLocalStorage.forEach((card) => {
+        cards.push(new Card(card.question, card.answer, card.category));
+    });
     return cards;
 }
 function addCardToLocalStorage(question, answer, category) {
@@ -115,15 +200,15 @@ function addCardToLocalStorage(question, answer, category) {
     localStorage.setItem('Memory-Cards-Cards', JSON.stringify(allCards));
 }
 function clearForm() {
-    addCardQuestionInput.value = '';
-    addCardAnswerInput.value = '';
-    chooseCategorySelect.value = '';
+    clearInput(addCardQuestionInput);
+    clearInput(addCardAnswerInput);
+    clearInput(chooseCategorySelect);
 }
 confirmAddCardBtn.addEventListener('click', (e) => {
     e.preventDefault();
     let question = addCardQuestionInput.value;
     let answer = addCardAnswerInput.value;
-    let category = chooseCategorySelect.value === 'Choose category' ? '' : chooseCategorySelect.value;
+    let category = chooseCategorySelect.value;
     if (checkIfQuestionExists(question)) {
         openErrorModal('This question already exists');
     }
@@ -132,22 +217,11 @@ confirmAddCardBtn.addEventListener('click', (e) => {
     }
     else {
         addCardToLocalStorage(question, answer, category);
-        displayCardsToModify(allCards);
-        displayCardsToDelete(allCards);
-        clearForm();
+        updateView();
         openErrorModal('Card added successfully');
     }
 });
 ///////////////////////////////////////////////////////////// MODIFY CARDS /////////////////////////////////////////////////////////////
-const modifyCardsList = document.getElementById('modify-cards-list');
-const modifyCardQuestionInput = document.getElementById('modify-card-question-input');
-const modifyCardAnswerInput = document.getElementById('modify-card-answer-input');
-const modifyCardCategorySelect = document.getElementById('modify-choose-category-select');
-const modifyCardNewCategoryInput = document.getElementById('modify-new-category-input');
-const modifyCardNewCategoryBtn = document.getElementById('modify-new-category-btn');
-const modifyCardConfirmBtn = document.getElementById('confirm-modify-card-btn');
-let cardQuestionToModify = '';
-displayCardsToModify(allCards);
 function displayCardsToModify(cards) {
     modifyCardsList.innerHTML = '';
     cards.forEach(card => {
@@ -196,8 +270,8 @@ function displayModifyCardForm(question, answer, category) {
     modifyCardQuestionInput.value = question;
     modifyCardAnswerInput.value = answer;
     modifyCardCategorySelect.value = category;
-    modifyCardsSection2.classList.remove('hidden-section-right');
-    modifyCardsSection.classList.add('hidden-section-left');
+    moveSectionToCenter(modifyCardsSection2);
+    moveSectionToLeft(modifyCardsSection);
 }
 modifyCardsList.addEventListener('click', (e) => {
     var _a;
@@ -222,13 +296,11 @@ modifyCardConfirmBtn.addEventListener('click', (e) => {
         openErrorModal('Please fill in all fields');
     }
     else {
-        console.log("zmieniam");
         changeCardData(question, answer, category);
-        displayCardsToModify(allCards);
-        displayCardsToDelete(allCards);
+        updateView();
         openErrorModal('Card modified successfully');
-        modifyCardsSection.classList.remove('hidden-section-left');
-        modifyCardsSection2.classList.add('hidden-section-right');
+        moveSectionToCenter(modifyCardsSection);
+        moveSectionToCenter(modifyCardsSection2);
     }
 });
 modifyCardNewCategoryBtn.addEventListener('click', (e) => {
@@ -238,17 +310,10 @@ modifyCardNewCategoryBtn.addEventListener('click', (e) => {
     categories = getCategoriesFromLocalStorage();
     addCategoriesToSelectElement(modifyCardCategorySelect);
     addCategoriesToSelectElement(chooseCategorySelect);
-    clearNewCategoryInput();
+    clearInput(modifyCardNewCategoryInput);
     modifyCardCategorySelect.value = newCategory;
 });
 ///////////////////////////////////////////////////////////// DELETE CARDS /////////////////////////////////////////////////////////////
-const deleteCardsList = document.getElementById('delete-cards-list');
-const deleteCardConfirmationModal = document.getElementById('delete-card-confirmation');
-const deleteCardModalQuestion = document.getElementById('delete-card-question');
-const deleteCardModalYesBtn = document.getElementById('delete-card-confirmation__yes-btn');
-const deleteCardModalNoBtn = document.getElementById('delete-card-confirmation__no-btn');
-const overlay = document.getElementById('overlay');
-let questionOfCardToDelete = '';
 function displayCardsToDelete(cards) {
     deleteCardsList.innerHTML = '';
     cards.forEach(card => {
@@ -258,7 +323,6 @@ function displayCardsToDelete(cards) {
                                         </div>`;
     });
 }
-displayCardsToDelete(allCards);
 deleteCardsList.addEventListener('click', (e) => {
     var _a;
     if (e.target !== null) {
@@ -267,8 +331,8 @@ deleteCardsList.addEventListener('click', (e) => {
             let parent = clickedElement.closest('.delete-card-section__card');
             let title = (_a = parent.querySelector('.delete-card-section__card-question')) === null || _a === void 0 ? void 0 : _a.textContent;
             if (title !== null && title !== undefined) {
-                questionOfCardToDelete = title;
-                showDeleteCardConfirmationModal(questionOfCardToDelete);
+                cardQuestionToDelete = title;
+                showDeleteCardConfirmationModal(cardQuestionToDelete);
             }
         }
     }
@@ -300,19 +364,19 @@ function deleteCardFromLocalStorage(question) {
 }
 deleteCardModalYesBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    deleteCardFromLocalStorage(questionOfCardToDelete);
+    deleteCardFromLocalStorage(cardQuestionToDelete);
     closeDeleteCardConfirmationModal();
     displayCardsToDelete(allCards);
     displayCardsToModify(allCards);
+    addCardsToDOM(createCardsHTMLElementsArray(allCards, ''));
+    addEventListenerToAllCards();
+    updateCounter();
 });
 deleteCardModalNoBtn.addEventListener('click', (e) => {
     e.preventDefault();
     closeDeleteCardConfirmationModal();
 });
 ///////////////////////////////////////////////////////////// ERROR MODAL /////////////////////////////////////////////////////////////
-const errorModal = document.getElementById('modal-with-errors');
-const errorModalMessage = document.getElementById('modal-with-errors-text');
-const errorModalBtn = document.getElementById('modal-with-errors-btn');
 function openErrorModal(message) {
     errorModalMessage.textContent = message;
     errorModal.classList.remove('error-modal-hidden');
@@ -327,54 +391,27 @@ errorModalBtn.addEventListener('click', () => {
     closeErrorModal();
 });
 ///////////////////////////////////////////////////////////// DISPLAY CARDS /////////////////////////////////////////////////////////////
-const displayCardsContainer = document.getElementById('display-cards-container');
-let currentCardIndex = 0;
-const prevCardBtn = document.getElementById('prev-card');
-const nextCardBtn = document.getElementById('next-card');
-const currentCardIndexSpan = document.getElementById('current-card');
-const totalCardsNumber = document.getElementById('total-cards');
 function createCardsHTMLElementsArray(cards, category) {
-    let cardsArray = [];
+    let cardsMarkupArray = [];
     let cardsCopy = [...cards];
     if (category !== '') {
         cardsCopy = cards.filter(card => card.category === category);
     }
     cardsCopy.forEach((card, index) => {
         if (index === 0) {
-            cardsArray.push(`<div class="card">
-                    <div class="card__wrapper">
-                        <div class="card__front is-active">
-                            <p class="card__front-text">${card.question}</p>
-                            <i class="fa-solid fa-rotate card__icon"></i>
-                        </div>
-                        <div class="card__back">
-                            <p class="card__back-text">${card.answer}</p>
-                            <i class="fa-solid fa-rotate card__icon"></i>
-                        </div>
-                    </div>
-                </div>`);
+            cardsMarkupArray.push(card.createCardHTMLElement());
         }
         else {
-            cardsArray.push(`<div class="card card-right">
-                    <div class="card__wrapper">
-                        <div class="card__front is-active">
-                            <p class="card__front-text">${card.question}</p>
-                            <i class="fa-solid fa-rotate card__icon"></i>
-                        </div>
-                        <div class="card__back">
-                            <p class="card__back-text">${card.answer}</p>
-                            <i class="fa-solid fa-rotate card__icon"></i>
-                        </div>
-                    </div>
-                </div>`);
+            cardsMarkupArray.push(card.createCardRightHTMLElement());
         }
     });
-    return cardsArray;
+    return cardsMarkupArray;
 }
 function addCardsToDOM(cards) {
+    currentCardIndex = 0;
+    displayCardsContainer.innerHTML = '';
     cards.forEach(card => {
         displayCardsContainer.innerHTML += card;
-        // add event listener to each card
     });
 }
 function addEventListenerToAllCards() {
@@ -407,8 +444,6 @@ function updateCounter() {
     currentCardIndexSpan.textContent = (currentCardIndex + 1).toString();
     totalCardsNumber.textContent = allCards.length.toString();
 }
-addCardsToDOM(createCardsHTMLElementsArray(allCards, ''));
-addEventListenerToAllCards();
 nextCardBtn.addEventListener('click', () => {
     displayNextCard();
     updateCounter();
@@ -417,5 +452,3 @@ prevCardBtn.addEventListener('click', () => {
     displayPrevCard();
     updateCounter();
 });
-console.log(createCardsHTMLElementsArray(allCards, ''));
-updateCounter();

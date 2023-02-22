@@ -424,7 +424,7 @@ body {
   max-height: 40rem;
   border-radius: 3px;
   perspective: 1000px;
-  transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in-out;
 }
 @media only screen and (max-width: 37.5em) {
   .card {
@@ -498,14 +498,14 @@ body {
   position: absolute;
   left: 120%;
   opacity: 0;
-  transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in-out;
   z-index: -10;
 }
 .card-left {
   position: absolute;
   left: -120%;
   opacity: 0;
-  transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in-out;
   z-index: -10;
 }
 
