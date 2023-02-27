@@ -123,6 +123,8 @@ function displayMainMenu() {
     backMainPageBtn.classList.add('hidden');
 }
 function displaySection(section) {
+    if (section.classList.contains('display-cards-section')) {
+    }
     moveSectionToLeft(mainMenuSection);
     moveSectionToCenter(section);
     backMainPageBtn.classList.remove('hidden');
@@ -224,12 +226,17 @@ confirmAddCardBtn.addEventListener('click', (e) => {
 ///////////////////////////////////////////////////////////// MODIFY CARDS /////////////////////////////////////////////////////////////
 function displayCardsToModify(cards) {
     modifyCardsList.innerHTML = '';
-    cards.forEach(card => {
-        modifyCardsList.innerHTML += `<div class="modify-card-section__card">
-                    <p class="modify-card-section__card-question">${card.question}</p>
-                    <button class="modify-card-section__card-button"><i class="fa-solid fa-pen-to-square"></i></button>
-                </div>`;
-    });
+    if (cards.length === 0) {
+        modifyCardsList.innerHTML = '<p class="section__paragraph">No cards to modify</p>';
+    }
+    else {
+        cards.forEach(card => {
+            modifyCardsList.innerHTML += `<div class="modify-card-section__card">
+                        <p class="modify-card-section__card-question">${card.question}</p>
+                        <button class="modify-card-section__card-button"><i class="fa-solid fa-pen-to-square"></i></button>
+                    </div>`;
+        });
+    }
 }
 function getCardAnswerByQuestion(question) {
     let answer = '';
@@ -315,13 +322,18 @@ modifyCardNewCategoryBtn.addEventListener('click', (e) => {
 });
 ///////////////////////////////////////////////////////////// DELETE CARDS /////////////////////////////////////////////////////////////
 function displayCardsToDelete(cards) {
-    deleteCardsList.innerHTML = '';
-    cards.forEach(card => {
-        deleteCardsList.innerHTML += `<div class="delete-card-section__card">
-                                            <p class="delete-card-section__card-question">${card.question}</p>
-                                            <button class="delete-card-section__card-button"><i class="fa-solid fa-trash"></i></button>
-                                        </div>`;
-    });
+    if (cards.length === 0) {
+        deleteCardsList.innerHTML = '<p class="section__paragraph">No cards to delete</p>';
+    }
+    else {
+        deleteCardsList.innerHTML = '';
+        cards.forEach(card => {
+            deleteCardsList.innerHTML += `<div class="delete-card-section__card">
+                                                <p class="delete-card-section__card-question">${card.question}</p>
+                                                <button class="delete-card-section__card-button"><i class="fa-solid fa-trash"></i></button>
+                                            </div>`;
+        });
+    }
 }
 deleteCardsList.addEventListener('click', (e) => {
     var _a;
@@ -408,11 +420,17 @@ function createCardsHTMLElementsArray(cards, category) {
     return cardsMarkupArray;
 }
 function addCardsToDOM(cards) {
-    currentCardIndex = 0;
-    displayCardsContainer.innerHTML = '';
-    cards.forEach(card => {
-        displayCardsContainer.innerHTML += card;
-    });
+    if (cards.length === 0) {
+        displayCardsContainer.innerHTML = '<p class="section__paragraph">No cards to display</p>';
+        currentCardIndexSpan.textContent = '0';
+    }
+    else {
+        currentCardIndex = 0;
+        displayCardsContainer.innerHTML = '';
+        cards.forEach(card => {
+            displayCardsContainer.innerHTML += card;
+        });
+    }
 }
 function addEventListenerToAllCards() {
     let cards = displayCardsContainer.querySelectorAll('.card');

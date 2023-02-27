@@ -1,4 +1,9 @@
 .section {
     @include absoluteAllSpace();
     transition: all .5s ease-in-out;
+
+    &__paragraph {
+        text-align: center;
+        font-size: 2.4rem;
+    }
 }

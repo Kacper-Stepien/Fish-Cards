@@ -77,12 +77,17 @@ body {
 .header {
   padding: 4.6rem 1rem 2.6rem 1rem;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 .header__title {
   text-align: center;
   font-size: 5.2rem;
   font-weight: 400;
   letter-spacing: 4px;
+  margin-bottom: 1.6rem;
   cursor: default;
 }
 @media only screen and (max-width: 37.5em) {
@@ -112,6 +117,11 @@ body {
 .header__back-icon:hover {
   transform: scale(1.2);
   color: #12B181;
+}
+.header__select {
+  position: absolute;
+  top: 5rem;
+  right: 5rem;
 }
 
 .footer {
@@ -149,6 +159,10 @@ body {
   width: 100%;
   height: 100%;
   transition: all 0.5s ease-in-out;
+}
+.section__paragraph {
+  text-align: center;
+  font-size: 2.4rem;
 }
 
 .menu-section {
@@ -539,6 +553,7 @@ body {
 
 .hidden {
   opacity: 0;
+  z-index: -1;
 }
 
 .hidden-section-left {

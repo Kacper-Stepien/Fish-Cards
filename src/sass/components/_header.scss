@@ -1,12 +1,14 @@
 .header {
     padding: 4.6rem 1rem 2.6rem 1rem;
     position: relative;
+    @include flex(column, space-between, center);
 
     &__title {
         text-align: center;
         font-size: 5.2rem;
         font-weight: 400;
         letter-spacing: 4px;
+        margin-bottom: 1.6rem;
         cursor: default;
 
         @include respond(phone) {
@@ -32,6 +34,12 @@
     &__back-icon:hover {
         transform: scale(1.2);
         color: $color-primary-light;
+    }
+
+    &__select {
+        position: absolute;
+        top: 5rem;
+        right: 5rem;
     }
 }
 
