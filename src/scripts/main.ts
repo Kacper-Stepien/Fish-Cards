@@ -24,6 +24,7 @@ const totalCardsNumberSpan = document.getElementById('total-cards') as HTMLSpanE
 const confirmAddCardButton = document.getElementById('confirm-add-card-btn') as HTMLButtonElement;
 
 const confirmModifyCardButton = document.getElementById('confirm-modify-card-btn') as HTMLButtonElement;
+const authorLink = document.getElementById('author-page') as HTMLAnchorElement;
 
 const navigation = new Navigation();
 const categories = new Categories();
@@ -262,6 +263,9 @@ deleteCardNoButton.addEventListener('click', () => {
     deleteCardModal.closeModal();
 });
 
+authorLink.addEventListener('click', () => {
+    window.open('https://github.com/Kacper-Stepien', '_blank');
+});
 
 // // Initialize app
 updateView();
