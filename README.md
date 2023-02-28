@@ -4,7 +4,7 @@ which are displayed on double-sided cards. Users can click on a card to flip it 
 and all changes are saved to local storage.
 
 ## Link to app:
-https://kacper-stepien.github.io/Fish-Cards/dist/index.html
+https://kacper-stepien.github.io/Flash-Cards/dist/index.html
 
 ## Technologies used in the project:
 [![](https://skills.thijs.gg/icons?i=html,scss,css,ts,js,webpack,&theme=dark)](https://skills.thijs.gg)
