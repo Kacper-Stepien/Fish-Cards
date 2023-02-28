@@ -158,7 +158,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 .section__paragraph {
   text-align: center;
@@ -447,14 +447,14 @@ body {
   }
 }
 .card.is-flipped .card__wrapper {
-  animation: rotate 0.5s linear both;
+  animation: rotate 0.3s linear both;
 }
 .card__wrapper {
   width: 100%;
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  animation: rotateinverse 0.5s linear both;
+  animation: rotateinverse 0.3s linear both;
   cursor: pointer;
 }
 .card__front, .card__back {

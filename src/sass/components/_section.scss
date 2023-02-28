@@ -1,6 +1,6 @@
 .section {
     @include absoluteAllSpace();
-    transition: all .5s ease-in-out;
+    transition: $section-transition;
 
     &__paragraph {
         text-align: center;

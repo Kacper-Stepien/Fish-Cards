@@ -40,6 +40,7 @@ export class Cards {
     addNewCard(question: string, answer: string, category: string) {
         this.allCards.push(new Card(question, answer, category));
         this.saveCardsToLocalStorage();
+        this.createCardsHTMLElements();
     }
 
     @autobind

@@ -48,10 +48,10 @@ function updateCounter() {
 function updateView() {
     displayCardsToModify();
     displayCardsToDelete();
-    updateCounter();
     addCardForm.clearForm();
     modifyCardForm.clearForm();
     displayCards();
+    updateCounter();
 }
 
 function displayCardsToModify() {
@@ -102,8 +102,9 @@ function displayCards() {
 }
 
 function addCardsToDOM() {
+    cards.createCardsHTMLElements();
     displayCardsContainer.innerHTML = '';
-    if (cards.getNumberOfCards() === 0) {
+    if (cards.getNumberOfCards() <= 0) {
         displayCardsContainer.innerHTML = '<p class="section__paragraph">No cards to display</p>';
     }
     else {

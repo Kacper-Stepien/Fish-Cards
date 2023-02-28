@@ -87,14 +87,28 @@ export class Navigation {
 
         this.backToMainMenuButton.addEventListener('click', () => {
             
-            if (this.modifyCards2.classList.contains('hidden-section-left')) {
+            if (this.modifyCards.classList.contains('hidden-section-left')) {
                 this.moveSectionToRight(this.modifyCards2);
-                this.moveSectionToLeft(this.modifyCards);
+                this.moveSectionToCenter(this.modifyCards);
             }
             else {
                 this.displayMainMenu();
             }
         });
 
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                this.displayMainMenu();
+            }
+            if (event.keyCode === 37) {
+                if (this.modifyCards.classList.contains('hidden-section-left')) {
+                this.moveSectionToRight(this.modifyCards2);
+                this.moveSectionToCenter(this.modifyCards);
+            }
+            else {
+                this.displayMainMenu();
+            }
+            }
+        });
     }
 }
